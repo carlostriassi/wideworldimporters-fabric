@@ -1,0 +1,12 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "Notebook",
+    "displayName": "apply_warehouse_security",
+    "description": "Wrapper notebook: copies scripts/ from BronzeLH/Files and runs apply_warehouse_security.py against GoldWH. Gated by WAREHOUSE_ENABLED in workspace_config.py. Run manually after a master_pipeline_lh_wh execution to apply T-SQL RLS, DDM, and database roles to GoldWH."
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "a3f1c2e8-7d4b-4a9e-b05f-8c6d3e741290"
+  }
+}

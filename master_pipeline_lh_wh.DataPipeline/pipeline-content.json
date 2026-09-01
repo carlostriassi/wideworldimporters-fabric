@@ -1,0 +1,236 @@
+{
+  "properties": {
+    "activities": [
+      {
+        "type": "TridentNotebook",
+        "typeProperties": {
+          "notebookId": "d94c7b13-aef1-4ecf-842c-f1bd5d42a923",
+          "workspaceId": "00000000-0000-0000-0000-000000000000"
+        },
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureInput": false,
+          "secureOutput": false
+        },
+        "name": "Silver Quarantine Resolver",
+        "state": "Active",
+        "dependsOn": []
+      },
+      {
+        "type": "TridentNotebook",
+        "typeProperties": {
+          "notebookId": "1f8e7434-5cac-4662-a590-9b4d77cac124",
+          "workspaceId": "00000000-0000-0000-0000-000000000000"
+        },
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureInput": false,
+          "secureOutput": false
+        },
+        "name": "Bronze Dispatcher",
+        "state": "Active",
+        "dependsOn": [
+          {
+            "activity": "Silver Quarantine Resolver",
+            "dependencyConditions": [
+              "Completed"
+            ]
+          }
+        ]
+      },
+      {
+        "type": "IfCondition",
+        "typeProperties": {
+          "expression": {
+            "value": "@equals(json(activity('Bronze Dispatcher').output.result.exitValue).status, 'SUCCESS')",
+            "type": "Expression"
+          },
+          "ifTrueActivities": [
+            {
+              "type": "TridentNotebook",
+              "typeProperties": {
+                "notebookId": "522c856d-36bb-48c3-acaf-78318ae6616a",
+                "workspaceId": "00000000-0000-0000-0000-000000000000"
+              },
+              "policy": {
+                "timeout": "0.12:00:00",
+                "retry": 0,
+                "retryIntervalInSeconds": 30,
+                "secureInput": false,
+                "secureOutput": false
+              },
+              "name": "Silver DQ Dedup",
+              "state": "Active",
+              "dependsOn": []
+            }
+          ],
+          "ifFalseActivities": [
+            {
+              "type": "TridentNotebook",
+              "typeProperties": {
+                "notebookId": "04e08f53-518c-4a1e-9cca-e651e8d44bcb",
+                "workspaceId": "00000000-0000-0000-0000-000000000000",
+                "parameters": {
+                  "layer_name": {
+                    "value": "Bronze",
+                    "type": "string"
+                  },
+                  "failed_json": {
+                    "value": {
+                      "value": "@string(json(activity('Bronze Dispatcher').output.result.exitValue).failed)",
+                      "type": "Expression"
+                    },
+                    "type": "string"
+                  },
+                  "run_id": {
+                    "value": {
+                      "value": "@pipeline().RunId",
+                      "type": "Expression"
+                    },
+                    "type": "string"
+                  }
+                }
+              },
+              "policy": {
+                "timeout": "0.00:05:00",
+                "retry": 0,
+                "retryIntervalInSeconds": 30,
+                "secureInput": false,
+                "secureOutput": false
+              },
+              "name": "Teams Alert Bronze Failure",
+              "description": "Runs teams_alert.Notebook — self-gates on TEAMS_ALERTS_ENABLED, never fails the pipeline.",
+              "state": "Active",
+              "dependsOn": []
+            }
+          ]
+        },
+        "name": "Bronze Status Gate",
+        "state": "Active",
+        "dependsOn": [
+          {
+            "activity": "Bronze Dispatcher",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ]
+      },
+      {
+        "type": "IfCondition",
+        "typeProperties": {
+          "expression": {
+            "value": "@or(equals(pipeline().parameters.gold_destination, 'lakehouse'), equals(pipeline().parameters.gold_destination, 'both'))",
+            "type": "Expression"
+          },
+          "ifTrueActivities": [
+            {
+              "type": "TridentNotebook",
+              "typeProperties": {
+                "notebookId": "300a2ebc-1149-4d1d-ad43-66c405361c75",
+                "workspaceId": "00000000-0000-0000-0000-000000000000"
+              },
+              "policy": {
+                "timeout": "0.12:00:00",
+                "retry": 0,
+                "retryIntervalInSeconds": 30,
+                "secureInput": false,
+                "secureOutput": false
+              },
+              "name": "Gold Star Schema",
+              "state": "Active",
+              "dependsOn": []
+            }
+          ],
+          "ifFalseActivities": []
+        },
+        "name": "Gold LH Router",
+        "state": "Active",
+        "dependsOn": [
+          {
+            "activity": "Bronze Status Gate",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ]
+      },
+      {
+        "type": "IfCondition",
+        "typeProperties": {
+          "expression": {
+            "value": "@or(equals(pipeline().parameters.gold_destination, 'warehouse'), equals(pipeline().parameters.gold_destination, 'both'))",
+            "type": "Expression"
+          },
+          "ifTrueActivities": [
+            {
+              "type": "TridentNotebook",
+              "typeProperties": {
+                "notebookId": "4b521e20-5ef8-4795-99a3-7fcf5c1c1f82",
+                "workspaceId": "00000000-0000-0000-0000-000000000000"
+              },
+              "policy": {
+                "timeout": "0.12:00:00",
+                "retry": 0,
+                "retryIntervalInSeconds": 30,
+                "secureInput": false,
+                "secureOutput": false
+              },
+              "name": "Gold Star Schema Warehouse",
+              "state": "Active",
+              "dependsOn": []
+            }
+          ],
+          "ifFalseActivities": []
+        },
+        "name": "Gold WH Router",
+        "state": "Active",
+        "dependsOn": [
+          {
+            "activity": "Gold LH Router",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ]
+      },
+      {
+        "type": "TridentNotebook",
+        "typeProperties": {
+          "notebookId": "f772815e-7533-42b6-80f0-c48ea3fd6c4e",
+          "workspaceId": "00000000-0000-0000-0000-000000000000"
+        },
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureInput": false,
+          "secureOutput": false
+        },
+        "name": "Silver Quarantine Triage",
+        "state": "Active",
+        "dependsOn": [
+          {
+            "activity": "Gold WH Router",
+            "dependencyConditions": [
+              "Completed"
+            ]
+          }
+        ]
+      }
+    ],
+    "parameters": {
+      "teams_webhook_url": {
+        "type": "string"
+      },
+      "gold_destination": {
+        "type": "string",
+        "defaultValue": "both"
+      }
+    }
+  }
+}

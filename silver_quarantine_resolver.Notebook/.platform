@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "Notebook",
+    "displayName": "silver_quarantine_resolver"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "d94c7b13-aef1-4ecf-842c-f1bd5d42a923"
+  }
+}

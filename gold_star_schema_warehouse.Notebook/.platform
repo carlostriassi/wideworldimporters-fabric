@@ -1,0 +1,12 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "Notebook",
+    "displayName": "gold_star_schema_warehouse",
+    "description": "Parallel Gold builder writing physical tables to the GoldWH Fabric Warehouse via T-SQL. Mirrors gold_star_schema.Notebook cell-for-cell. Enabled by workspace_config.WAREHOUSE_ENABLED + pipeline parameter gold_destination."
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "4b521e20-5ef8-4795-99a3-7fcf5c1c1f82"
+  }
+}
