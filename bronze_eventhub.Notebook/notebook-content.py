@@ -144,11 +144,37 @@ def build_eh_read_options(cfg):
 # CELL ********************
 
 # CELL 3 — Payload parser + audit columns
+def _resolve_col(cfg, df, name):
+    r"""Resolve a registry column name onto the DataFrame's actual column name.
+
+    `primary_keys` is declared in the post-rename TARGET name space (it must
+    equal dq_rules_registry dedup_key), but on the Event Hub path
+    `apply_column_renames()` runs later, inside foreachBatch — so the parsed
+    payload still carries the SOURCE names here. Accept either form.
+    """
+    cols = set(df.columns)
+    if name in cols:
+        return name
+    renames = cfg.get('column_renames') or {}
+    if renames.get(name) in cols:
+        return renames[name]
+    for src, tgt in renames.items():          # registry used the renamed name
+        if tgt == name and src in cols:
+            return src
+    raise KeyError(
+        f"column '{name}' not found on the parsed payload. Check primary_keys / "
+        f"watermark_col / column_renames in source_registry.py. "
+        f"Available columns: {sorted(cols)}"
+    )
+
+def _resolve_pks(cfg, df):
+    """Map registry `primary_keys` onto the DataFrame's actual column names."""
+    return [_resolve_col(cfg, df, pk) for pk in cfg.get('primary_keys', [])]
+
 def parse_and_enrich(df_raw, cfg):
     payload_schema = cfg['payload_schema']
     wm_col         = cfg.get('watermark_col', 'event_time')
     wm_delay       = cfg.get('watermark_delay', '10 minutes')
-    pks            = cfg['primary_keys']
     cdc_envelope   = cfg.get('cdc_envelope', False)
 
     df_payload = df_raw.select(
@@ -200,7 +226,7 @@ def parse_and_enrich(df_raw, cfg):
         .withColumn('_source_table',      lit(cfg['eh_name'])) \
         .withColumn('_load_type',         lit('streaming')) \
         .withColumn('_watermark_applied', lit(wm_delay)) \
-        .withColumn('_row_hash',          md5(concat_ws('|', *[col(c) for c in pks])))
+        .withColumn('_row_hash',          md5(concat_ws('|', *[col(c) for c in _resolve_pks(cfg, df_wm)])))
 
 # CELL ********************
 

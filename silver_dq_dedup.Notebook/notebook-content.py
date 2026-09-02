@@ -321,7 +321,19 @@ def check_freshness(df, table_name, rules, source_cfg):
     if not sla_hours:
         return
     wm_col = source_cfg.get('watermark_col')
+    if not wm_col:
+        return
+    # watermark_col is declared in the SOURCE name space (it is interpolated
+    # into the remote pushdown predicate), but this DataFrame is post-Bronze
+    # and therefore already renamed — resolve through column_renames.
+    if wm_col not in df.columns:
+        wm_col = (source_cfg.get('column_renames') or {}).get(wm_col)
     if not wm_col or wm_col not in df.columns:
+        log.warning(
+            f'[FRESHNESS] {table_name}: watermark column '
+            f"'{source_cfg.get('watermark_col')}' not found on the Silver "
+            'DataFrame (checked column_renames) — freshness check skipped'
+        )
         return
     max_ts = df.agg(spark_max(col(wm_col))).collect()[0][0]
     if max_ts is None:

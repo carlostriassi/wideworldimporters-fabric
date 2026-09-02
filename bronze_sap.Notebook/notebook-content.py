@@ -260,6 +260,33 @@ def apply_column_renames(df, cfg):
             df = df.withColumnRenamed(src_col, tgt_col)
     return df
 
+def _resolve_col(cfg, df, name):
+    """Resolve a registry column name onto the DataFrame's actual column name.
+
+    `apply_column_renames()` runs before quarantine, audit stamping and the
+    watermark max(), so a name declared in source casing (e.g. 'LastEditedWhen')
+    is already 'last_edited_when' on the DataFrame — and vice versa when the
+    registry declares the post-rename name. Accept either form.
+    """
+    cols    = set(df.columns)
+    if name in cols:
+        return name
+    renames = cfg.get('column_renames') or {}
+    if renames.get(name) in cols:
+        return renames[name]
+    for src, tgt in renames.items():          # registry used the renamed name
+        if tgt == name and src in cols:
+            return src
+    raise KeyError(
+        f"column '{name}' not found on the DataFrame after column renames. "
+        f"Check primary_keys / watermark_col / column_renames in "
+        f"source_registry.py. Available columns: {sorted(cols)}"
+    )
+
+def _resolve_pks(cfg, df):
+    """Map registry `primary_keys` onto the DataFrame's post-rename names."""
+    return [_resolve_col(cfg, df, pk) for pk in cfg.get('primary_keys', [])]
+
 def quarantine_bad_rows(df, table_name, cfg):
     """
     Registry-driven Bronze quarantine.
@@ -273,7 +300,7 @@ def quarantine_bad_rows(df, table_name, cfg):
     from pyspark.sql.functions import when
 
     rules      = DQ_RULES_REGISTRY.get(table_name, {})
-    not_null   = rules.get('not_null_cols', cfg.get('primary_keys', []))
+    not_null   = rules.get('not_null_cols', _resolve_pks(cfg, df))
     enum_rules = rules.get('enum_rules', {})
 
     bad    = lit(False)
@@ -301,7 +328,7 @@ def quarantine_bad_rows(df, table_name, cfg):
         log.warning(f'[Q] {table_name}: {bad_count} rows quarantined')
     return df_clean
 def add_audit_cols(df, cfg, watermark_val):
-    pks  = cfg['primary_keys']
+    pks  = _resolve_pks(cfg, df)
     host = cfg['base_url'].replace('https://', '').replace('http://', '').split('/')[0]
     return df \
         .withColumn('_ingested_at',       current_timestamp()) \
