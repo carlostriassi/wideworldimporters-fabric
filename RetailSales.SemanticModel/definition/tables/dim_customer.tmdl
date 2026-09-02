@@ -1,0 +1,282 @@
+table dim_customer
+	lineageTag: 305cf979-50e7-4386-9443-f6c2ace9e3cf
+	sourceLineageTag: [retail].[dim_customer]
+
+	column customer_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 524f64de-4c2d-4505-a253-2195275bd917
+		sourceLineageTag: customer_id
+		summarizeBy: sum
+		sourceColumn: customer_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column customer_name
+		dataType: string
+		lineageTag: ef820a1a-4a43-4363-b760-75ad27a97345
+		sourceLineageTag: customer_name
+		summarizeBy: none
+		sourceColumn: customer_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column bill_to_customer_id
+		dataType: int64
+		formatString: 0
+		lineageTag: d575e279-2bbf-42da-bbf5-26109f936890
+		sourceLineageTag: bill_to_customer_id
+		summarizeBy: sum
+		sourceColumn: bill_to_customer_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column customer_category_id
+		dataType: int64
+		formatString: 0
+		lineageTag: e4b477b8-8ede-4729-8b7b-7970f4e9feeb
+		sourceLineageTag: customer_category_id
+		summarizeBy: sum
+		sourceColumn: customer_category_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column buying_group_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 9b3a026d-3534-42eb-afd0-57e699848b7b
+		sourceLineageTag: buying_group_id
+		summarizeBy: sum
+		sourceColumn: buying_group_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column delivery_method_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 8eb3db63-ed2a-4da6-93d3-f4e4a8346be9
+		sourceLineageTag: delivery_method_id
+		summarizeBy: sum
+		sourceColumn: delivery_method_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column delivery_city_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 827e6d7b-0665-4585-9c41-59fdc736733f
+		sourceLineageTag: delivery_city_id
+		summarizeBy: sum
+		sourceColumn: delivery_city_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column postal_city_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 5858834b-a206-44a0-b3ec-0d68bae246ca
+		sourceLineageTag: postal_city_id
+		summarizeBy: sum
+		sourceColumn: postal_city_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column credit_limit
+		dataType: double
+		lineageTag: 35e640f5-9707-4b78-9fbf-543b932d68f4
+		sourceLineageTag: credit_limit
+		summarizeBy: sum
+		sourceColumn: credit_limit
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column account_opened_date
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 1cf504be-1fce-4496-9344-17c0366fa782
+		sourceLineageTag: account_opened_date
+		summarizeBy: none
+		sourceColumn: account_opened_date
+
+		annotation SummarizationSetBy = Automatic
+
+	column standard_discount_percentage
+		dataType: double
+		lineageTag: 0f87dcf3-f24f-4263-a979-cf74c117e1f8
+		sourceLineageTag: standard_discount_percentage
+		summarizeBy: sum
+		sourceColumn: standard_discount_percentage
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column is_statement_sent
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 3512b708-28d6-46e5-94fa-5e4fa37f871d
+		sourceLineageTag: is_statement_sent
+		summarizeBy: none
+		sourceColumn: is_statement_sent
+
+		annotation SummarizationSetBy = Automatic
+
+	column is_on_credit_hold
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 0fe75dff-bdd8-48d2-bae5-6fc75a1b6d3b
+		sourceLineageTag: is_on_credit_hold
+		summarizeBy: none
+		sourceColumn: is_on_credit_hold
+
+		annotation SummarizationSetBy = Automatic
+
+	column payment_days
+		dataType: int64
+		formatString: 0
+		lineageTag: 27da1da2-5130-41a5-8032-18f2fd834672
+		sourceLineageTag: payment_days
+		summarizeBy: sum
+		sourceColumn: payment_days
+
+		annotation SummarizationSetBy = Automatic
+
+	column phone_number
+		dataType: string
+		lineageTag: 742bc15c-30f7-4aad-8752-738c97f1082c
+		sourceLineageTag: phone_number
+		summarizeBy: none
+		sourceColumn: phone_number
+
+		annotation SummarizationSetBy = Automatic
+
+	column fax_number
+		dataType: string
+		lineageTag: c5030416-5add-4fa3-8b2b-f38fa7ce10ac
+		sourceLineageTag: fax_number
+		summarizeBy: none
+		sourceColumn: fax_number
+
+		annotation SummarizationSetBy = Automatic
+
+	column website_url
+		dataType: string
+		lineageTag: 8f421bee-92eb-4e7a-8ab6-17b8d1bf4970
+		sourceLineageTag: website_url
+		summarizeBy: none
+		sourceColumn: website_url
+
+		annotation SummarizationSetBy = Automatic
+
+	column delivery_address_line1
+		dataType: string
+		lineageTag: 36fb4cfd-f2af-4cbe-8f42-dc0aaed1fdd1
+		sourceLineageTag: delivery_address_line1
+		summarizeBy: none
+		sourceColumn: delivery_address_line1
+
+		annotation SummarizationSetBy = Automatic
+
+	column delivery_address_line2
+		dataType: string
+		lineageTag: f64987ba-de88-4e68-bba9-9cc4dddf5d13
+		sourceLineageTag: delivery_address_line2
+		summarizeBy: none
+		sourceColumn: delivery_address_line2
+
+		annotation SummarizationSetBy = Automatic
+
+	column delivery_postal_code
+		dataType: string
+		lineageTag: b2cd2f2f-7bf4-4ab9-852c-d05b704e559c
+		sourceLineageTag: delivery_postal_code
+		summarizeBy: none
+		sourceColumn: delivery_postal_code
+
+		annotation SummarizationSetBy = Automatic
+
+	column postal_address_line1
+		dataType: string
+		lineageTag: 899177c1-887e-49f6-9c08-7f786ff18b17
+		sourceLineageTag: postal_address_line1
+		summarizeBy: none
+		sourceColumn: postal_address_line1
+
+		annotation SummarizationSetBy = Automatic
+
+	column postal_address_line2
+		dataType: string
+		lineageTag: 486df973-e31c-4fd4-9f34-1ce2f00abe89
+		sourceLineageTag: postal_address_line2
+		summarizeBy: none
+		sourceColumn: postal_address_line2
+
+		annotation SummarizationSetBy = Automatic
+
+	column postal_postal_code
+		dataType: string
+		lineageTag: cb9057f3-7013-483a-974a-dd674b7fd777
+		sourceLineageTag: postal_postal_code
+		summarizeBy: none
+		sourceColumn: postal_postal_code
+
+		annotation SummarizationSetBy = Automatic
+
+	column _scd2_hash
+		dataType: string
+		lineageTag: 3cf9a72f-f9f5-4067-b762-5521a6cfd033
+		sourceLineageTag: _scd2_hash
+		summarizeBy: none
+		sourceColumn: _scd2_hash
+
+		annotation SummarizationSetBy = Automatic
+
+	column customer_sk
+		dataType: int64
+		formatString: 0
+		lineageTag: a00b1588-952a-4233-a8e9-2788273887bf
+		sourceLineageTag: customer_sk
+		summarizeBy: sum
+		sourceColumn: customer_sk
+
+		annotation SummarizationSetBy = Automatic
+
+	column eff_start_date
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 5daacdbb-0054-4a52-ae9a-59a173a1b4a4
+		sourceLineageTag: eff_start_date
+		summarizeBy: none
+		sourceColumn: eff_start_date
+
+		annotation SummarizationSetBy = Automatic
+
+	column eff_end_date
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 973e2f34-c3b5-4760-9068-8903c1de0a1c
+		sourceLineageTag: eff_end_date
+		summarizeBy: none
+		sourceColumn: eff_end_date
+
+		annotation SummarizationSetBy = Automatic
+
+	column is_current
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: d90e8032-4e88-4838-9ecb-f792666a15aa
+		sourceLineageTag: is_current
+		summarizeBy: none
+		sourceColumn: is_current
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dim_customer = entity
+		mode: directLake
+		source
+			entityName: dim_customer
+			schemaName: retail
+			expressionSource: 'DirectLake - GoldLH'
+

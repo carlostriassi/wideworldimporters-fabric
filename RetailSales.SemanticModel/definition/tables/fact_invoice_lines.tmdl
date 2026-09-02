@@ -1,0 +1,195 @@
+table fact_invoice_lines
+	lineageTag: 6c76728f-1d1f-4b71-9bf7-2a92c6435a5b
+	sourceLineageTag: [retail].[fact_invoice_lines]
+
+	column fact_invoice_lines_sk
+		dataType: int64
+		formatString: 0
+		lineageTag: 7f10da4c-af79-4185-a21e-6fdcaac880ac
+		sourceLineageTag: fact_invoice_lines_sk
+		summarizeBy: sum
+		sourceColumn: fact_invoice_lines_sk
+
+		annotation SummarizationSetBy = Automatic
+
+	column date_key
+		dataType: int64
+		formatString: 0
+		lineageTag: 08a246f5-b52f-4c7d-b9c5-0dc2e97d489c
+		sourceLineageTag: date_key
+		summarizeBy: sum
+		sourceColumn: date_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column customer_sk
+		dataType: int64
+		formatString: 0
+		lineageTag: 9987ddce-57c8-45ae-a69e-9dcf98351923
+		sourceLineageTag: customer_sk
+		summarizeBy: sum
+		sourceColumn: customer_sk
+
+		annotation SummarizationSetBy = Automatic
+
+	column salesperson_sk
+		dataType: int64
+		formatString: 0
+		lineageTag: 20c48998-dd9c-4fa6-ad0b-d31f1788ee01
+		sourceLineageTag: salesperson_sk
+		summarizeBy: sum
+		sourceColumn: salesperson_sk
+
+		annotation SummarizationSetBy = Automatic
+
+	column stock_item_sk
+		dataType: int64
+		formatString: 0
+		lineageTag: 37a33746-bf8e-4fa0-8794-346646e20721
+		sourceLineageTag: stock_item_sk
+		summarizeBy: sum
+		sourceColumn: stock_item_sk
+
+		annotation SummarizationSetBy = Automatic
+
+	column invoice_line_id
+		dataType: int64
+		formatString: 0
+		lineageTag: c676be60-6dce-4aee-9b17-4b9fc21c978c
+		sourceLineageTag: invoice_line_id
+		summarizeBy: sum
+		sourceColumn: invoice_line_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column invoice_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 626a8368-185d-4ffc-b3eb-d9ac94f62a87
+		sourceLineageTag: invoice_id
+		summarizeBy: sum
+		sourceColumn: invoice_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column stock_item_id
+		dataType: int64
+		formatString: 0
+		lineageTag: ec96a9a0-14d1-4180-b8df-fe49eebab44a
+		sourceLineageTag: stock_item_id
+		summarizeBy: sum
+		sourceColumn: stock_item_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column customer_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 3112ca74-a2da-4fce-bcfd-fafa88707f1d
+		sourceLineageTag: customer_id
+		summarizeBy: sum
+		sourceColumn: customer_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column salesperson_person_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 0d8f0f86-f75f-4257-bff5-ab77ddced830
+		sourceLineageTag: salesperson_person_id
+		summarizeBy: sum
+		sourceColumn: salesperson_person_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column package_type_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 7aed8d89-fe54-4471-9b62-e840e56168f1
+		sourceLineageTag: package_type_id
+		summarizeBy: sum
+		sourceColumn: package_type_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column description
+		dataType: string
+		lineageTag: 2fa6b822-8b39-4cf4-9385-b83cc37dca83
+		sourceLineageTag: description
+		summarizeBy: none
+		sourceColumn: description
+
+		annotation SummarizationSetBy = Automatic
+
+	column quantity
+		dataType: int64
+		formatString: 0
+		lineageTag: 99da1273-c76c-4f13-a07c-98178ae3cdab
+		sourceLineageTag: quantity
+		summarizeBy: sum
+		sourceColumn: quantity
+
+		annotation SummarizationSetBy = Automatic
+
+	column unit_price
+		dataType: double
+		lineageTag: 9957b0dd-2da2-4bbe-b118-2d2db767a8ba
+		sourceLineageTag: unit_price
+		summarizeBy: sum
+		sourceColumn: unit_price
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column tax_rate
+		dataType: double
+		lineageTag: 1ee18cc7-3430-4528-ba92-ff58fb2d20af
+		sourceLineageTag: tax_rate
+		summarizeBy: sum
+		sourceColumn: tax_rate
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column tax_amount
+		dataType: double
+		lineageTag: 94402385-a2c8-486c-8352-aacff42368b1
+		sourceLineageTag: tax_amount
+		summarizeBy: sum
+		sourceColumn: tax_amount
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column line_profit
+		dataType: double
+		lineageTag: 0c732505-1a98-4d32-8a84-6590a8d17add
+		sourceLineageTag: line_profit
+		summarizeBy: sum
+		sourceColumn: line_profit
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column extended_price
+		dataType: double
+		lineageTag: cd2a28b4-63ea-432a-bc9e-2ecc61c76d7e
+		sourceLineageTag: extended_price
+		summarizeBy: sum
+		sourceColumn: extended_price
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition fact_invoice_lines = entity
+		mode: directLake
+		source
+			entityName: fact_invoice_lines
+			schemaName: retail
+			expressionSource: 'DirectLake - GoldLH'
+

@@ -1,0 +1,171 @@
+table fact_purchase_order_lines
+	lineageTag: 91bc7c6f-e8e3-4d58-a15d-cb2f4ccf17d7
+	sourceLineageTag: [retail].[fact_purchase_order_lines]
+
+	column fact_purchase_order_lines_sk
+		dataType: int64
+		formatString: 0
+		lineageTag: 95169ed1-a15a-4d86-a92f-85d22f01e64f
+		sourceLineageTag: fact_purchase_order_lines_sk
+		summarizeBy: sum
+		sourceColumn: fact_purchase_order_lines_sk
+
+		annotation SummarizationSetBy = Automatic
+
+	column date_key
+		dataType: int64
+		formatString: 0
+		lineageTag: abb9846c-7d9a-4298-89d5-733f37c3ab75
+		sourceLineageTag: date_key
+		summarizeBy: sum
+		sourceColumn: date_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column supplier_sk
+		dataType: int64
+		formatString: 0
+		lineageTag: c6fef5fa-cb8d-4738-90c6-228670c4cba9
+		sourceLineageTag: supplier_sk
+		summarizeBy: sum
+		sourceColumn: supplier_sk
+
+		annotation SummarizationSetBy = Automatic
+
+	column stock_item_sk
+		dataType: int64
+		formatString: 0
+		lineageTag: 059afc1f-7099-4ff5-a6f6-b3d71833bb05
+		sourceLineageTag: stock_item_sk
+		summarizeBy: sum
+		sourceColumn: stock_item_sk
+
+		annotation SummarizationSetBy = Automatic
+
+	column purchase_order_line_id
+		dataType: int64
+		formatString: 0
+		lineageTag: a2803168-0d85-474b-bbfc-7cd3124ae80d
+		sourceLineageTag: purchase_order_line_id
+		summarizeBy: sum
+		sourceColumn: purchase_order_line_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column purchase_order_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 02c78a47-7cd2-4177-843e-a465a5387e20
+		sourceLineageTag: purchase_order_id
+		summarizeBy: sum
+		sourceColumn: purchase_order_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column stock_item_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 2b3189a2-597a-4288-ab8b-8d2f13e3549d
+		sourceLineageTag: stock_item_id
+		summarizeBy: sum
+		sourceColumn: stock_item_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column supplier_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 8a0c3995-4731-4b13-80a5-7619f5c1f756
+		sourceLineageTag: supplier_id
+		summarizeBy: sum
+		sourceColumn: supplier_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column package_type_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 94db5160-ff08-4bce-bf13-6220230de216
+		sourceLineageTag: package_type_id
+		summarizeBy: sum
+		sourceColumn: package_type_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column description
+		dataType: string
+		lineageTag: 949cd2bc-b5ac-4add-a13c-ba6d32965e53
+		sourceLineageTag: description
+		summarizeBy: none
+		sourceColumn: description
+
+		annotation SummarizationSetBy = Automatic
+
+	column ordered_outers
+		dataType: int64
+		formatString: 0
+		lineageTag: 8ea889da-c86d-49eb-a9b6-edf01efba6db
+		sourceLineageTag: ordered_outers
+		summarizeBy: sum
+		sourceColumn: ordered_outers
+
+		annotation SummarizationSetBy = Automatic
+
+	column received_outers
+		dataType: int64
+		formatString: 0
+		lineageTag: 52d70808-76e8-4a1a-b0a8-b68291f295ee
+		sourceLineageTag: received_outers
+		summarizeBy: sum
+		sourceColumn: received_outers
+
+		annotation SummarizationSetBy = Automatic
+
+	column expected_unit_price_per_outer
+		dataType: double
+		lineageTag: 8dc73310-4955-4f8e-8cbb-26068f46dc16
+		sourceLineageTag: expected_unit_price_per_outer
+		summarizeBy: sum
+		sourceColumn: expected_unit_price_per_outer
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column last_receipt_date
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 60187525-80dd-4865-abe4-b61ee1047745
+		sourceLineageTag: last_receipt_date
+		summarizeBy: none
+		sourceColumn: last_receipt_date
+
+		annotation SummarizationSetBy = Automatic
+
+	column is_order_line_finalized
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: f7bb493b-97e2-4aae-b75c-f7f1b897adea
+		sourceLineageTag: is_order_line_finalized
+		summarizeBy: none
+		sourceColumn: is_order_line_finalized
+
+		annotation SummarizationSetBy = Automatic
+
+	column receipt_variance_outers
+		dataType: int64
+		formatString: 0
+		lineageTag: 54dac05d-4735-41a9-b7c2-454144c3d191
+		sourceLineageTag: receipt_variance_outers
+		summarizeBy: sum
+		sourceColumn: receipt_variance_outers
+
+		annotation SummarizationSetBy = Automatic
+
+	partition fact_purchase_order_lines = entity
+		mode: directLake
+		source
+			entityName: fact_purchase_order_lines
+			schemaName: retail
+			expressionSource: 'DirectLake - GoldLH'
+

@@ -1,0 +1,164 @@
+table fact_supplier_transactions
+	lineageTag: be01dc50-0e23-491d-b52b-857433e916fd
+	sourceLineageTag: [retail].[fact_supplier_transactions]
+
+	column fact_supplier_transactions_sk
+		dataType: int64
+		formatString: 0
+		lineageTag: 3e5cd1d3-acb3-453b-a2c0-2cbd1ba524e6
+		sourceLineageTag: fact_supplier_transactions_sk
+		summarizeBy: sum
+		sourceColumn: fact_supplier_transactions_sk
+
+		annotation SummarizationSetBy = Automatic
+
+	column date_key
+		dataType: int64
+		formatString: 0
+		lineageTag: 9580c600-9ac9-4eb1-a427-3d2b024003e3
+		sourceLineageTag: date_key
+		summarizeBy: sum
+		sourceColumn: date_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column supplier_sk
+		dataType: int64
+		formatString: 0
+		lineageTag: e277e6af-63a8-413c-ae47-dd57b6eb1166
+		sourceLineageTag: supplier_sk
+		summarizeBy: sum
+		sourceColumn: supplier_sk
+
+		annotation SummarizationSetBy = Automatic
+
+	column supplier_transaction_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 8fcccd2a-4ff3-4802-a1c8-72679a185b62
+		sourceLineageTag: supplier_transaction_id
+		summarizeBy: sum
+		sourceColumn: supplier_transaction_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column supplier_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 46d1a1eb-ed9b-4801-b868-d7694f0ea293
+		sourceLineageTag: supplier_id
+		summarizeBy: sum
+		sourceColumn: supplier_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column transaction_type_id
+		dataType: int64
+		formatString: 0
+		lineageTag: f3eca3d6-14d9-4e79-9eb0-00f8cca5f899
+		sourceLineageTag: transaction_type_id
+		summarizeBy: sum
+		sourceColumn: transaction_type_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column purchase_order_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 4731142e-4c2e-4392-9bd1-7300888bacd8
+		sourceLineageTag: purchase_order_id
+		summarizeBy: sum
+		sourceColumn: purchase_order_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column payment_method_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 840eebc2-14a7-4129-9298-ce0af1cd3dc9
+		sourceLineageTag: payment_method_id
+		summarizeBy: sum
+		sourceColumn: payment_method_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column supplier_invoice_number
+		dataType: string
+		lineageTag: 7ffbb85b-3da2-4665-b110-0a6c311d1df6
+		sourceLineageTag: supplier_invoice_number
+		summarizeBy: none
+		sourceColumn: supplier_invoice_number
+
+		annotation SummarizationSetBy = Automatic
+
+	column transaction_date
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 40073907-58cd-44f0-b1c9-7a04c0fa1d0e
+		sourceLineageTag: transaction_date
+		summarizeBy: none
+		sourceColumn: transaction_date
+
+		annotation SummarizationSetBy = Automatic
+
+	column amount_excluding_tax
+		dataType: double
+		lineageTag: 01c33b16-c60f-46ae-a025-8989ba0132ce
+		sourceLineageTag: amount_excluding_tax
+		summarizeBy: sum
+		sourceColumn: amount_excluding_tax
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column tax_amount
+		dataType: double
+		lineageTag: 9baf1f2d-49ac-4b06-944a-daddd7ddb201
+		sourceLineageTag: tax_amount
+		summarizeBy: sum
+		sourceColumn: tax_amount
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column transaction_amount
+		dataType: double
+		lineageTag: f9ab628e-f4f5-40e3-8268-b96d463b9738
+		sourceLineageTag: transaction_amount
+		summarizeBy: sum
+		sourceColumn: transaction_amount
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column outstanding_balance
+		dataType: double
+		lineageTag: 76c01974-0eec-45a7-9724-9d4c22cd6bf0
+		sourceLineageTag: outstanding_balance
+		summarizeBy: sum
+		sourceColumn: outstanding_balance
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column finalization_date
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 07934d8f-8640-41ed-a876-1b7a9b77466f
+		sourceLineageTag: finalization_date
+		summarizeBy: none
+		sourceColumn: finalization_date
+
+		annotation SummarizationSetBy = Automatic
+
+	partition fact_supplier_transactions = entity
+		mode: directLake
+		source
+			entityName: fact_supplier_transactions
+			schemaName: retail
+			expressionSource: 'DirectLake - GoldLH'
+

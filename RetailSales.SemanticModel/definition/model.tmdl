@@ -1,0 +1,20 @@
+model Model
+	culture: en-US
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: en-US
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+annotation __PBI_TimeIntelligenceEnabled = 1
+
+annotation PBI_QueryOrder = ["DirectLake - GoldLH"]
+
+ref table fact_customer_transactions
+ref table dim_stock_item
+ref table dim_date
+ref table dim_customer
+ref table fact_order_lines
+ref table fact_invoice_lines
+ref table dim_salesperson
+

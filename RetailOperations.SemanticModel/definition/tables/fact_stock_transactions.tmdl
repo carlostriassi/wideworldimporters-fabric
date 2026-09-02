@@ -1,0 +1,132 @@
+table fact_stock_transactions
+	lineageTag: 94fd608f-f22f-4f7d-a42a-264a61325861
+	sourceLineageTag: [retail].[fact_stock_transactions]
+
+	column fact_stock_transactions_sk
+		dataType: int64
+		formatString: 0
+		lineageTag: 0b12da0e-c9b8-4f6c-afad-02c40b250bb0
+		sourceLineageTag: fact_stock_transactions_sk
+		summarizeBy: sum
+		sourceColumn: fact_stock_transactions_sk
+
+		annotation SummarizationSetBy = Automatic
+
+	column date_key
+		dataType: int64
+		formatString: 0
+		lineageTag: 1a7b801f-d81f-46b1-9e7e-c9c04842fde3
+		sourceLineageTag: date_key
+		summarizeBy: sum
+		sourceColumn: date_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column stock_item_sk
+		dataType: int64
+		formatString: 0
+		lineageTag: ab9f7ac5-3946-4218-ae9e-f1236844ca3e
+		sourceLineageTag: stock_item_sk
+		summarizeBy: sum
+		sourceColumn: stock_item_sk
+
+		annotation SummarizationSetBy = Automatic
+
+	column stock_item_transaction_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 8fadf017-ac00-499e-8741-afcfb7bc8db5
+		sourceLineageTag: stock_item_transaction_id
+		summarizeBy: sum
+		sourceColumn: stock_item_transaction_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column stock_item_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 5a086a3f-0ee6-4ba0-81f5-aa1052486b91
+		sourceLineageTag: stock_item_id
+		summarizeBy: sum
+		sourceColumn: stock_item_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column transaction_type_id
+		dataType: int64
+		formatString: 0
+		lineageTag: ba7175c9-db4a-40f6-bdbb-9c85c5347793
+		sourceLineageTag: transaction_type_id
+		summarizeBy: sum
+		sourceColumn: transaction_type_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column customer_id
+		dataType: int64
+		formatString: 0
+		lineageTag: e412fec4-1270-4cec-8686-4236a1819882
+		sourceLineageTag: customer_id
+		summarizeBy: sum
+		sourceColumn: customer_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column invoice_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 5d467b2a-5f59-47b7-abb2-90ad911ee3e4
+		sourceLineageTag: invoice_id
+		summarizeBy: sum
+		sourceColumn: invoice_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column supplier_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 39dd18a3-8188-42ed-a519-964fdd92abda
+		sourceLineageTag: supplier_id
+		summarizeBy: sum
+		sourceColumn: supplier_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column purchase_order_id
+		dataType: int64
+		formatString: 0
+		lineageTag: c62e7c8a-c111-4f59-8515-4127642ae5dc
+		sourceLineageTag: purchase_order_id
+		summarizeBy: sum
+		sourceColumn: purchase_order_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column transaction_occurred_when
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 11f1b0f3-fccd-4e48-a4b0-538e25b03974
+		sourceLineageTag: transaction_occurred_when
+		summarizeBy: none
+		sourceColumn: transaction_occurred_when
+
+		annotation SummarizationSetBy = Automatic
+
+	column quantity
+		dataType: double
+		lineageTag: 955ec71a-4c13-4c8b-ad70-4caf3bf1c6b6
+		sourceLineageTag: quantity
+		summarizeBy: sum
+		sourceColumn: quantity
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition fact_stock_transactions = entity
+		mode: directLake
+		source
+			entityName: fact_stock_transactions
+			schemaName: retail
+			expressionSource: 'DirectLake - GoldLH'
+
