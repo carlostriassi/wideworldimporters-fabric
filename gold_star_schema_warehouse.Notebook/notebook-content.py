@@ -157,21 +157,78 @@ def _query(sql: str, params=None) -> list:
             cur.execute(sql, params)
         return cur.fetchall()
 
+def _sql_literal(v) -> str:
+    """
+    Render a Python/Spark value as a T-SQL literal.
+
+    Literals are used instead of pyodbc parameter binding throughout this
+    notebook. fast_executemany infers each parameter's SQL type from the FIRST
+    row of the batch, which against the Fabric Warehouse ODBC endpoint produces
+    two hard failures that literals sidestep entirely:
+      • DATE / DATETIME2 parameters hang or abort the transaction
+        (error 3971 "The server failed to resume the transaction") — the same
+        problem build_dim_date_wh() already works around.
+      • A column whose first row is a small int but which later holds a large
+        BIGINT (e.g. a hash surrogate key) raises 22003 "Numeric value out of
+        range", because the bind width was sized from row 0.
+    """
+    import datetime as _dt
+    import decimal as _dec
+    if v is None:
+        return "NULL"
+    if isinstance(v, bool):                       # before int — bool is an int subclass
+        return "1" if v else "0"
+    if isinstance(v, int):
+        return str(v)
+    if isinstance(v, float):
+        # SQL FLOAT cannot represent NaN/Infinity — store as NULL instead.
+        if v != v or v in (float("inf"), float("-inf")):
+            return "NULL"
+        return repr(v)
+    if isinstance(v, _dec.Decimal):
+        return "NULL" if v.is_nan() else str(v)
+    if isinstance(v, _dt.datetime):
+        return "'" + v.isoformat(sep=" ", timespec="microseconds") + "'"
+    if isinstance(v, _dt.date):
+        return "'" + v.isoformat() + "'"
+    if isinstance(v, (bytes, bytearray)):
+        return "0x" + bytes(v).hex()
+    return "N'" + str(v).replace("'", "''") + "'"
+
 def _insert_df_to_wh(df, wh_table: str):
-    """Batch-insert a PySpark DataFrame into a WH physical table via pyodbc executemany."""
-    import pandas as pd
-    pdf  = df.toPandas()
-    pdf  = pdf.where(pd.notna(pdf), other=None)
-    cols = list(pdf.columns)
-    sql  = (f"INSERT INTO {wh_table} ({', '.join(f'[{c}]' for c in cols)}) "
-            f"VALUES ({', '.join('?' * len(cols))})")
-    rows = [tuple(r) for r in pdf.itertuples(index=False, name=None)]
+    """
+    Batch-insert a PySpark DataFrame into a WH physical table using inline
+    VALUES literals (see _sql_literal for why parameter binding is avoided).
+
+    Rows are collected via Spark, not toPandas(), so types survive intact —
+    toPandas() widens nullable ints to float and dates to pandas.Timestamp,
+    which is what previously broke dim_supplier and dim_customer. Only
+    dimension tables flow through here; facts are built server-side with
+    SELECT INTO + MERGE and never materialise on the driver.
+    """
+    cols = list(df.columns)
+    rows = df.collect()
+    if not rows:
+        log.info(f"[GOLD-WH] 0 rows → {wh_table} (nothing to insert)")
+        return
+
+    insert_prefix = (f"INSERT INTO {wh_table} "
+                     f"({', '.join(f'[{c}]' for c in cols)}) VALUES ")
+    # SQL Server caps INSERT ... VALUES at 1000 rows; also keep the statement
+    # text bounded on wide dimensions.
+    batch_size    = max(1, min(500, 10_000 // max(1, len(cols))))
+    total_batches = (len(rows) + batch_size - 1) // batch_size
+
     with _warehouse_conn() as conn:
         cur = conn.cursor()
-        cur.fast_executemany = True
-        cur.executemany(sql, rows)
+        for b in range(total_batches):
+            batch = rows[b * batch_size : (b + 1) * batch_size]
+            value_clauses = ",".join(
+                "(" + ",".join(_sql_literal(r[c]) for c in cols) + ")" for r in batch
+            )
+            cur.execute(insert_prefix + value_clauses)
         conn.commit()
-    log.info(f"[GOLD-WH] {len(rows)} rows → {wh_table}")
+    log.info(f"[GOLD-WH] {len(rows)} rows → {wh_table} ({total_batches} batch(es))")
 
 # Quick connectivity check — fails fast if the warehouse is unreachable
 try:
@@ -611,6 +668,64 @@ def build_dimension_wh(dim_name: str, dim_cfg: dict, domain: str):
         n = _query(f"SELECT COUNT(*) FROM {schema}.{table}")[0][0]
         log.info(f"[GOLD-WH] {schema}.{table}: {n} rows (scd2)")
         _apply_masked_columns_wh(schema, table, dim_cfg)
+        return table
+
+    if dim_type == "type4":
+        # Parity with gold_star_schema.Notebook's type4 branch: a current-only
+        # main table (Type 1 behaviour) plus an append-only <table>_history
+        # satellite carrying eff_start_date. GoldLH is authoritative for both —
+        # the change detection and hash-based SKs already ran there, so mirroring
+        # avoids SK drift against the LH fact tables.
+        hist_table     = f"{table}_history"
+        main_gold_path = dim_cfg["gold_path"]
+        hist_gold_path = f"{main_gold_path}_history"
+
+        # ── Main table: full replace from GoldLH ──
+        _drop_view_if_exists(schema, table)
+        _drop_dependent_policies(schema, table)
+        _exec(f"IF OBJECT_ID('{schema}.{table}', 'U') IS NOT NULL DROP TABLE {schema}.{table};")
+        _exec(f"""
+            CREATE TABLE {schema}.{table} (
+                {sk_col} BIGINT NOT NULL,
+                {tgt_col_defs}
+            );
+        """)
+        df_main   = spark.read.format("delta").load(f"{GOLD_TABLES}/{main_gold_path}")
+        gold_cols = [sk_col] + [t for _, t in col_pairs]
+        _insert_df_to_wh(df_main.select(gold_cols), f"{schema}.{table}")
+        n = _query(f"SELECT COUNT(*) FROM {schema}.{table}")[0][0]
+        log.info(f"[GOLD-WH] {schema}.{table}: {n} rows (type4 main)")
+        _apply_masked_columns_wh(schema, table, dim_cfg)
+
+        # ── History satellite: full replace from GoldLH's append-only table ──
+        # The LH notebook appends only changed rows, so LH already holds the
+        # complete change log; replacing keeps WH byte-identical to it.
+        _drop_view_if_exists(schema, hist_table)
+        _drop_dependent_policies(schema, hist_table)
+        _exec(f"IF OBJECT_ID('{schema}.{hist_table}', 'U') IS NOT NULL DROP TABLE {schema}.{hist_table};")
+        _exec(f"""
+            CREATE TABLE {schema}.{hist_table} (
+                {sk_col} BIGINT NOT NULL,
+                {tgt_col_defs},
+                [_type4_hash]    VARCHAR(64) NULL,
+                [eff_start_date] DATE        NULL
+            );
+        """)
+        try:
+            df_hist    = spark.read.format("delta").load(f"{GOLD_TABLES}/{hist_gold_path}")
+            hist_extra = ["_type4_hash", "eff_start_date"]
+            hist_cols  = gold_cols + [c for c in hist_extra if c in df_hist.columns]
+            _insert_df_to_wh(df_hist.select(hist_cols), f"{schema}.{hist_table}")
+            nh = _query(f"SELECT COUNT(*) FROM {schema}.{hist_table}")[0][0]
+            log.info(f"[GOLD-WH] {schema}.{hist_table}: {nh} rows (type4 history)")
+        except Exception as _hist_exc:
+            # An empty history table is not fatal for the main dimension or for
+            # any fact joining to it — surface it and continue.
+            log.warning(
+                f"[GOLD-WH] {schema}.{hist_table}: history not mirrored "
+                f"({_hist_exc}). Run gold_star_schema.Notebook to populate "
+                f"{hist_gold_path} in GoldLH first."
+            )
         return table
 
     raise ValueError(f"Unknown dimension type: {dim_type}")
