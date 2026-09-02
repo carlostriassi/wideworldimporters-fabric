@@ -1,0 +1,11 @@
+expression 'DirectLake - GoldLH' =
+		let
+		    Source = AzureStorage.DataLake("https://onelake.dfs.fabric.microsoft.com/6ea4a078-4d51-47fd-8826-33f82412fd40/f1f8338a-8971-4f45-8f36-4ca6b4147e6a", [HierarchicalNavigation=true])
+		in
+		    Source
+	lineageTag: 1da2053f-4b75-4aa7-8343-9e7e2ff8f259
+
+	annotation PBI_IncludeFutureArtifacts = False
+
+	annotation PBI_RemovedChildren = [{"remoteItemId":{"analysisServicesObject":{"sourceName":null,"sourceLineageTag":"[retail].[fact_supplier_transactions]"}},"objectType":"Table"},{"remoteItemId":{"analysisServicesObject":{"sourceName":null,"sourceLineageTag":"[retail].[dim_stock_item_history]"}},"objectType":"Table"},{"remoteItemId":{"analysisServicesObject":{"sourceName":null,"sourceLineageTag":"[retail].[fact_stock_transactions]"}},"objectType":"Table"},{"remoteItemId":{"analysisServicesObject":{"sourceName":null,"sourceLineageTag":"[retail].[fact_purchase_order_lines]"}},"objectType":"Table"},{"remoteItemId":{"analysisServicesObject":{"sourceName":null,"sourceLineageTag":"[retail].[dim_supplier]"}},"objectType":"Table"}]
+

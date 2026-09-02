@@ -1,0 +1,180 @@
+table dim_supplier
+	lineageTag: 8e2b0990-0dd0-4fbe-a418-0ed9c6417d40
+	sourceLineageTag: [retail].[dim_supplier]
+
+	column supplier_id
+		dataType: int64
+		formatString: 0
+		lineageTag: b270e37b-ed49-4a80-b481-b12a997f4533
+		sourceLineageTag: supplier_id
+		summarizeBy: sum
+		sourceColumn: supplier_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column supplier_name
+		dataType: string
+		lineageTag: 53dd6c74-f63c-4deb-aa7a-f0b36d9e5ffd
+		sourceLineageTag: supplier_name
+		summarizeBy: none
+		sourceColumn: supplier_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column supplier_category_id
+		dataType: int64
+		formatString: 0
+		lineageTag: e93c2c7b-e30a-408d-8ad6-61e5ccbc65b6
+		sourceLineageTag: supplier_category_id
+		summarizeBy: sum
+		sourceColumn: supplier_category_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column delivery_method_id
+		dataType: int64
+		formatString: 0
+		lineageTag: e7f4f4f5-ef1e-4242-a0b4-0a4f43118ac5
+		sourceLineageTag: delivery_method_id
+		summarizeBy: sum
+		sourceColumn: delivery_method_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column delivery_city_id
+		dataType: int64
+		formatString: 0
+		lineageTag: a834b1e0-9b5b-4964-96a3-47e808fcf59f
+		sourceLineageTag: delivery_city_id
+		summarizeBy: sum
+		sourceColumn: delivery_city_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column postal_city_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 56bf5b87-84a6-4681-85bd-34b15b2e25ff
+		sourceLineageTag: postal_city_id
+		summarizeBy: sum
+		sourceColumn: postal_city_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column supplier_reference
+		dataType: string
+		lineageTag: 39e656d0-ddeb-4302-967d-a233782c77eb
+		sourceLineageTag: supplier_reference
+		summarizeBy: none
+		sourceColumn: supplier_reference
+
+		annotation SummarizationSetBy = Automatic
+
+	column payment_days
+		dataType: int64
+		formatString: 0
+		lineageTag: 6688266e-9937-4e3f-99cf-728ac9467bfe
+		sourceLineageTag: payment_days
+		summarizeBy: sum
+		sourceColumn: payment_days
+
+		annotation SummarizationSetBy = Automatic
+
+	column phone_number
+		dataType: string
+		lineageTag: 6d1e8f77-64cc-4555-a567-c28d7024f3ad
+		sourceLineageTag: phone_number
+		summarizeBy: none
+		sourceColumn: phone_number
+
+		annotation SummarizationSetBy = Automatic
+
+	column fax_number
+		dataType: string
+		lineageTag: ea905e3f-37c6-4b6b-9b41-390cac965148
+		sourceLineageTag: fax_number
+		summarizeBy: none
+		sourceColumn: fax_number
+
+		annotation SummarizationSetBy = Automatic
+
+	column website_url
+		dataType: string
+		lineageTag: 3335094c-7733-4fbe-9594-063ab3f8186c
+		sourceLineageTag: website_url
+		summarizeBy: none
+		sourceColumn: website_url
+
+		annotation SummarizationSetBy = Automatic
+
+	column delivery_address_line1
+		dataType: string
+		lineageTag: c5b67e3c-f607-41e3-b503-be22d7e31fad
+		sourceLineageTag: delivery_address_line1
+		summarizeBy: none
+		sourceColumn: delivery_address_line1
+
+		annotation SummarizationSetBy = Automatic
+
+	column delivery_address_line2
+		dataType: string
+		lineageTag: 6d64ffe1-c98a-43c0-85da-9d4f2384dde4
+		sourceLineageTag: delivery_address_line2
+		summarizeBy: none
+		sourceColumn: delivery_address_line2
+
+		annotation SummarizationSetBy = Automatic
+
+	column delivery_postal_code
+		dataType: string
+		lineageTag: 329e56fd-f653-410d-8db4-6680d3f4dbb0
+		sourceLineageTag: delivery_postal_code
+		summarizeBy: none
+		sourceColumn: delivery_postal_code
+
+		annotation SummarizationSetBy = Automatic
+
+	column postal_address_line1
+		dataType: string
+		lineageTag: 775a1cce-fa2e-4044-9169-085c102c5b81
+		sourceLineageTag: postal_address_line1
+		summarizeBy: none
+		sourceColumn: postal_address_line1
+
+		annotation SummarizationSetBy = Automatic
+
+	column postal_address_line2
+		dataType: string
+		lineageTag: ebb3af10-9454-46a6-8354-1bc29e05b466
+		sourceLineageTag: postal_address_line2
+		summarizeBy: none
+		sourceColumn: postal_address_line2
+
+		annotation SummarizationSetBy = Automatic
+
+	column postal_postal_code
+		dataType: string
+		lineageTag: 19a8be89-a74d-4c16-92b4-e376b38b561d
+		sourceLineageTag: postal_postal_code
+		summarizeBy: none
+		sourceColumn: postal_postal_code
+
+		annotation SummarizationSetBy = Automatic
+
+	column supplier_sk
+		dataType: int64
+		formatString: 0
+		lineageTag: afd23f45-6bcf-48ec-aa53-5b0c75c36146
+		sourceLineageTag: supplier_sk
+		summarizeBy: sum
+		sourceColumn: supplier_sk
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dim_supplier = entity
+		mode: directLake
+		source
+			entityName: dim_supplier
+			schemaName: retail
+			expressionSource: 'DirectLake - GoldLH'
+

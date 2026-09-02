@@ -1,0 +1,97 @@
+table dim_salesperson
+	lineageTag: a103127e-4fd1-4826-ad95-a0177b200743
+	sourceLineageTag: [retail].[dim_salesperson]
+
+	column person_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 391cde33-d609-457b-ad7c-484a9c58c2dc
+		sourceLineageTag: person_id
+		summarizeBy: sum
+		sourceColumn: person_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column full_name
+		dataType: string
+		lineageTag: 5d467cc3-e4ba-4d28-bf89-90524697d624
+		sourceLineageTag: full_name
+		summarizeBy: none
+		sourceColumn: full_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column preferred_name
+		dataType: string
+		lineageTag: 4741942d-7383-45ec-a58a-aab4f67c8d58
+		sourceLineageTag: preferred_name
+		summarizeBy: none
+		sourceColumn: preferred_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column is_salesperson
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 2fccc9cf-f5be-4afd-a0f0-219bd7476781
+		sourceLineageTag: is_salesperson
+		summarizeBy: none
+		sourceColumn: is_salesperson
+
+		annotation SummarizationSetBy = Automatic
+
+	column is_employee
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 3c396daa-050e-476a-b7d9-109b6d03fac5
+		sourceLineageTag: is_employee
+		summarizeBy: none
+		sourceColumn: is_employee
+
+		annotation SummarizationSetBy = Automatic
+
+	column email_address
+		dataType: string
+		lineageTag: aab2df1f-eb1c-4ab4-8a6a-01379bb5e1e8
+		sourceLineageTag: email_address
+		summarizeBy: none
+		sourceColumn: email_address
+
+		annotation SummarizationSetBy = Automatic
+
+	column phone_number
+		dataType: string
+		lineageTag: 0431e36d-f7cc-46e3-8dfe-61976f38ef4f
+		sourceLineageTag: phone_number
+		summarizeBy: none
+		sourceColumn: phone_number
+
+		annotation SummarizationSetBy = Automatic
+
+	column salesperson_sk
+		dataType: int64
+		formatString: 0
+		lineageTag: da354b8a-b86b-4e37-919a-3f3509b57df6
+		sourceLineageTag: salesperson_sk
+		summarizeBy: sum
+		sourceColumn: salesperson_sk
+
+		annotation SummarizationSetBy = Automatic
+
+	column salesperson_person_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 17baa580-c815-46cd-8abd-7d59ddf794b2
+		sourceLineageTag: salesperson_person_id
+		summarizeBy: sum
+		sourceColumn: salesperson_person_id
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dim_salesperson = entity
+		mode: directLake
+		source
+			entityName: dim_salesperson
+			schemaName: retail
+			expressionSource: 'DirectLake - GoldLH'
+

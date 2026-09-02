@@ -1,0 +1,155 @@
+table fact_customer_transactions
+	lineageTag: b13a98aa-e10d-4d61-8155-45d16fb89fb2
+	sourceLineageTag: [retail].[fact_customer_transactions]
+
+	column fact_customer_transactions_sk
+		dataType: int64
+		formatString: 0
+		lineageTag: 2956f77a-d712-4266-b628-a65986bde4ab
+		sourceLineageTag: fact_customer_transactions_sk
+		summarizeBy: sum
+		sourceColumn: fact_customer_transactions_sk
+
+		annotation SummarizationSetBy = Automatic
+
+	column date_key
+		dataType: int64
+		formatString: 0
+		lineageTag: 6346c3af-40b7-4dc9-ae58-67fffcccc651
+		sourceLineageTag: date_key
+		summarizeBy: sum
+		sourceColumn: date_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column customer_sk
+		dataType: int64
+		formatString: 0
+		lineageTag: c1ed4032-7512-4197-94bf-f9d2aec6bfed
+		sourceLineageTag: customer_sk
+		summarizeBy: sum
+		sourceColumn: customer_sk
+
+		annotation SummarizationSetBy = Automatic
+
+	column customer_transaction_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 13765386-1cba-4cbb-910d-f4d1455f5db3
+		sourceLineageTag: customer_transaction_id
+		summarizeBy: sum
+		sourceColumn: customer_transaction_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column customer_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 0021439a-1381-4989-a2de-aff58ae1fe1c
+		sourceLineageTag: customer_id
+		summarizeBy: sum
+		sourceColumn: customer_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column transaction_type_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 2ad87638-d50d-4465-aec5-ea0a105433b1
+		sourceLineageTag: transaction_type_id
+		summarizeBy: sum
+		sourceColumn: transaction_type_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column invoice_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 69c8f344-b525-4ef5-9ad9-2ccf4d5cf462
+		sourceLineageTag: invoice_id
+		summarizeBy: sum
+		sourceColumn: invoice_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column payment_method_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 8afc3a96-11e3-4593-ba99-a3dce7e4c831
+		sourceLineageTag: payment_method_id
+		summarizeBy: sum
+		sourceColumn: payment_method_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column transaction_date
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: f29c1502-5a90-41bf-8382-ac79fa51a661
+		sourceLineageTag: transaction_date
+		summarizeBy: none
+		sourceColumn: transaction_date
+
+		annotation SummarizationSetBy = Automatic
+
+	column amount_excluding_tax
+		dataType: double
+		lineageTag: 3bcb7ccf-1cfe-4bec-b1e1-4ded50df0225
+		sourceLineageTag: amount_excluding_tax
+		summarizeBy: sum
+		sourceColumn: amount_excluding_tax
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column tax_amount
+		dataType: double
+		lineageTag: 93577a24-4278-44d2-b5dc-0d955246a891
+		sourceLineageTag: tax_amount
+		summarizeBy: sum
+		sourceColumn: tax_amount
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column transaction_amount
+		dataType: double
+		lineageTag: 3a11c4a3-9e20-4248-bc65-7c049028f6e4
+		sourceLineageTag: transaction_amount
+		summarizeBy: sum
+		sourceColumn: transaction_amount
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column outstanding_balance
+		dataType: double
+		lineageTag: 2c4b955a-801d-4f32-929d-6b9718d144e0
+		sourceLineageTag: outstanding_balance
+		summarizeBy: sum
+		sourceColumn: outstanding_balance
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column finalization_date
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 7d9babea-5f0e-4873-974b-8bc01c2e565b
+		sourceLineageTag: finalization_date
+		summarizeBy: none
+		sourceColumn: finalization_date
+
+		annotation SummarizationSetBy = Automatic
+
+	partition fact_customer_transactions = entity
+		mode: directLake
+		source
+			entityName: fact_customer_transactions
+			schemaName: retail
+			expressionSource: 'DirectLake - GoldLH'
+

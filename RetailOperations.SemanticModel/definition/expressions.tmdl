@@ -1,0 +1,11 @@
+expression 'DirectLake - GoldLH' =
+		let
+		    Source = AzureStorage.DataLake("https://onelake.dfs.fabric.microsoft.com/6ea4a078-4d51-47fd-8826-33f82412fd40/f1f8338a-8971-4f45-8f36-4ca6b4147e6a", [HierarchicalNavigation=true])
+		in
+		    Source
+	lineageTag: 44297087-7bfb-4b9e-a64f-839485efcaf6
+
+	annotation PBI_IncludeFutureArtifacts = False
+
+	annotation PBI_RemovedChildren = [{"remoteItemId":{"analysisServicesObject":{"sourceName":null,"sourceLineageTag":"[retail].[fact_customer_transactions]"}},"objectType":"Table"},{"remoteItemId":{"analysisServicesObject":{"sourceName":null,"sourceLineageTag":"[retail].[dim_stock_item_history]"}},"objectType":"Table"},{"remoteItemId":{"analysisServicesObject":{"sourceName":null,"sourceLineageTag":"[retail].[dim_customer]"}},"objectType":"Table"},{"remoteItemId":{"analysisServicesObject":{"sourceName":null,"sourceLineageTag":"[retail].[fact_order_lines]"}},"objectType":"Table"},{"remoteItemId":{"analysisServicesObject":{"sourceName":null,"sourceLineageTag":"[retail].[fact_invoice_lines]"}},"objectType":"Table"},{"remoteItemId":{"analysisServicesObject":{"sourceName":null,"sourceLineageTag":"[retail].[dim_salesperson]"}},"objectType":"Table"}]
+

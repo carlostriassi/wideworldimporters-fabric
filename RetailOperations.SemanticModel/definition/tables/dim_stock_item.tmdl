@@ -1,0 +1,190 @@
+table dim_stock_item
+	lineageTag: b95ed98c-f7fb-41ad-a92b-a7078b726e88
+	sourceLineageTag: [retail].[dim_stock_item]
+
+	column stock_item_id
+		dataType: int64
+		formatString: 0
+		lineageTag: ac64c45b-5777-4843-bd9f-9544ab3efcd4
+		sourceLineageTag: stock_item_id
+		summarizeBy: sum
+		sourceColumn: stock_item_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column stock_item_name
+		dataType: string
+		lineageTag: f8deea18-c4eb-44af-888b-36c315b88415
+		sourceLineageTag: stock_item_name
+		summarizeBy: none
+		sourceColumn: stock_item_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column supplier_id
+		dataType: int64
+		formatString: 0
+		lineageTag: f58f656f-8b3a-4a85-b29a-87e31bd61f30
+		sourceLineageTag: supplier_id
+		summarizeBy: sum
+		sourceColumn: supplier_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column color_id
+		dataType: int64
+		formatString: 0
+		lineageTag: a6daa79b-6f7b-4270-a605-c2b12f196fd5
+		sourceLineageTag: color_id
+		summarizeBy: sum
+		sourceColumn: color_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column unit_package_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 47efe16b-5a7f-47c6-a19d-1eb6765a5810
+		sourceLineageTag: unit_package_id
+		summarizeBy: sum
+		sourceColumn: unit_package_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column outer_package_id
+		dataType: int64
+		formatString: 0
+		lineageTag: cded76ba-1969-469d-a623-64cf044e5bae
+		sourceLineageTag: outer_package_id
+		summarizeBy: sum
+		sourceColumn: outer_package_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column brand
+		dataType: string
+		lineageTag: ac941a0f-5f70-42c8-8369-bea8b50c3985
+		sourceLineageTag: brand
+		summarizeBy: none
+		sourceColumn: brand
+
+		annotation SummarizationSetBy = Automatic
+
+	column size
+		dataType: string
+		lineageTag: 470fdb8d-93ab-4e89-82e9-12f26dbd700c
+		sourceLineageTag: size
+		summarizeBy: none
+		sourceColumn: size
+
+		annotation SummarizationSetBy = Automatic
+
+	column lead_time_days
+		dataType: int64
+		formatString: 0
+		lineageTag: 6838754f-082c-4577-a01f-8a1c65e72a60
+		sourceLineageTag: lead_time_days
+		summarizeBy: sum
+		sourceColumn: lead_time_days
+
+		annotation SummarizationSetBy = Automatic
+
+	column quantity_per_outer
+		dataType: int64
+		formatString: 0
+		lineageTag: 687c3ab7-a40b-4a79-a9ab-01de254284a1
+		sourceLineageTag: quantity_per_outer
+		summarizeBy: sum
+		sourceColumn: quantity_per_outer
+
+		annotation SummarizationSetBy = Automatic
+
+	column is_chiller_stock
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 5543bd04-6ca2-41d6-a722-1c02c578b42e
+		sourceLineageTag: is_chiller_stock
+		summarizeBy: none
+		sourceColumn: is_chiller_stock
+
+		annotation SummarizationSetBy = Automatic
+
+	column barcode
+		dataType: string
+		lineageTag: 8748a676-2c15-43d1-b639-86b7105b8dea
+		sourceLineageTag: barcode
+		summarizeBy: none
+		sourceColumn: barcode
+
+		annotation SummarizationSetBy = Automatic
+
+	column tax_rate
+		dataType: double
+		lineageTag: 5b3dac4c-d00b-4123-b22c-cdfbaceaafd5
+		sourceLineageTag: tax_rate
+		summarizeBy: sum
+		sourceColumn: tax_rate
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column unit_price
+		dataType: double
+		lineageTag: 562e93d1-b869-4b83-ba0e-be055d22d112
+		sourceLineageTag: unit_price
+		summarizeBy: sum
+		sourceColumn: unit_price
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column recommended_retail_price
+		dataType: double
+		lineageTag: f32da399-2bb0-4d89-bc7b-ce7506963e5e
+		sourceLineageTag: recommended_retail_price
+		summarizeBy: sum
+		sourceColumn: recommended_retail_price
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column typical_weight_per_unit
+		dataType: double
+		lineageTag: 6665961e-a622-4532-a10e-6b4b0e569461
+		sourceLineageTag: typical_weight_per_unit
+		summarizeBy: sum
+		sourceColumn: typical_weight_per_unit
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column marketing_comments
+		dataType: string
+		lineageTag: 5e616ff2-3628-4f3a-bb28-8f8ccc0bef50
+		sourceLineageTag: marketing_comments
+		summarizeBy: none
+		sourceColumn: marketing_comments
+
+		annotation SummarizationSetBy = Automatic
+
+	column stock_item_sk
+		dataType: int64
+		formatString: 0
+		lineageTag: eeab4535-322a-49d4-aff0-4eb03946fe85
+		sourceLineageTag: stock_item_sk
+		summarizeBy: sum
+		sourceColumn: stock_item_sk
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dim_stock_item = entity
+		mode: directLake
+		source
+			entityName: dim_stock_item
+			schemaName: retail
+			expressionSource: 'DirectLake - GoldLH'
+
