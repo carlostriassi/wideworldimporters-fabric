@@ -7,7 +7,7 @@ table fact_supplier_transactions
 		formatString: 0
 		lineageTag: 3e5cd1d3-acb3-453b-a2c0-2cbd1ba524e6
 		sourceLineageTag: fact_supplier_transactions_sk
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: fact_supplier_transactions_sk
 
 		annotation SummarizationSetBy = Automatic
@@ -17,7 +17,7 @@ table fact_supplier_transactions
 		formatString: 0
 		lineageTag: 9580c600-9ac9-4eb1-a427-3d2b024003e3
 		sourceLineageTag: date_key
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: date_key
 
 		annotation SummarizationSetBy = Automatic
@@ -27,7 +27,7 @@ table fact_supplier_transactions
 		formatString: 0
 		lineageTag: e277e6af-63a8-413c-ae47-dd57b6eb1166
 		sourceLineageTag: supplier_sk
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: supplier_sk
 
 		annotation SummarizationSetBy = Automatic
@@ -37,7 +37,7 @@ table fact_supplier_transactions
 		formatString: 0
 		lineageTag: 8fcccd2a-4ff3-4802-a1c8-72679a185b62
 		sourceLineageTag: supplier_transaction_id
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: supplier_transaction_id
 
 		annotation SummarizationSetBy = Automatic
@@ -47,7 +47,7 @@ table fact_supplier_transactions
 		formatString: 0
 		lineageTag: 46d1a1eb-ed9b-4801-b868-d7694f0ea293
 		sourceLineageTag: supplier_id
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: supplier_id
 
 		annotation SummarizationSetBy = Automatic
@@ -57,7 +57,7 @@ table fact_supplier_transactions
 		formatString: 0
 		lineageTag: f3eca3d6-14d9-4e79-9eb0-00f8cca5f899
 		sourceLineageTag: transaction_type_id
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: transaction_type_id
 
 		annotation SummarizationSetBy = Automatic
@@ -67,7 +67,7 @@ table fact_supplier_transactions
 		formatString: 0
 		lineageTag: 4731142e-4c2e-4392-9bd1-7300888bacd8
 		sourceLineageTag: purchase_order_id
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: purchase_order_id
 
 		annotation SummarizationSetBy = Automatic
@@ -77,7 +77,7 @@ table fact_supplier_transactions
 		formatString: 0
 		lineageTag: 840eebc2-14a7-4129-9298-ce0af1cd3dc9
 		sourceLineageTag: payment_method_id
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: payment_method_id
 
 		annotation SummarizationSetBy = Automatic

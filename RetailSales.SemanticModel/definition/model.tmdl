@@ -17,4 +17,8 @@ ref table dim_customer
 ref table fact_order_lines
 ref table fact_invoice_lines
 ref table dim_salesperson
-
+ref table dim_security_user
+ref role 'store_associate'
+ref role 'district_manager'
+ref role 'retail_executive'
+ref role 'retail_auditor'

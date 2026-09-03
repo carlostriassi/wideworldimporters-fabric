@@ -1,0 +1,50 @@
+relationship 'fact_order_lines-dim_date-date_key'
+	fromColumn: fact_order_lines.date_key
+	toColumn: dim_date.date_key
+	crossFilteringBehavior: oneDirection
+
+relationship 'fact_order_lines-dim_customer-customer_sk'
+	fromColumn: fact_order_lines.customer_sk
+	toColumn: dim_customer.customer_sk
+	crossFilteringBehavior: oneDirection
+
+relationship 'fact_order_lines-dim_salesperson-salesperson_sk'
+	fromColumn: fact_order_lines.salesperson_sk
+	toColumn: dim_salesperson.salesperson_sk
+	crossFilteringBehavior: oneDirection
+
+relationship 'fact_order_lines-dim_stock_item-stock_item_sk'
+	fromColumn: fact_order_lines.stock_item_sk
+	toColumn: dim_stock_item.stock_item_sk
+	crossFilteringBehavior: oneDirection
+
+relationship 'fact_invoice_lines-dim_date-date_key'
+	fromColumn: fact_invoice_lines.date_key
+	toColumn: dim_date.date_key
+	crossFilteringBehavior: oneDirection
+
+relationship 'fact_invoice_lines-dim_customer-customer_sk'
+	fromColumn: fact_invoice_lines.customer_sk
+	toColumn: dim_customer.customer_sk
+	crossFilteringBehavior: oneDirection
+
+relationship 'fact_invoice_lines-dim_salesperson-salesperson_sk'
+	fromColumn: fact_invoice_lines.salesperson_sk
+	toColumn: dim_salesperson.salesperson_sk
+	crossFilteringBehavior: oneDirection
+
+relationship 'fact_invoice_lines-dim_stock_item-stock_item_sk'
+	fromColumn: fact_invoice_lines.stock_item_sk
+	toColumn: dim_stock_item.stock_item_sk
+	crossFilteringBehavior: oneDirection
+
+relationship 'fact_customer_transactions-dim_date-date_key'
+	fromColumn: fact_customer_transactions.date_key
+	toColumn: dim_date.date_key
+	crossFilteringBehavior: oneDirection
+
+relationship 'fact_customer_transactions-dim_customer-customer_sk'
+	fromColumn: fact_customer_transactions.customer_sk
+	toColumn: dim_customer.customer_sk
+	crossFilteringBehavior: oneDirection
+

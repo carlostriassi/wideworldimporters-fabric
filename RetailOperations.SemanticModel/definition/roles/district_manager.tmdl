@@ -1,0 +1,5 @@
+role 'district_manager'
+	modelPermission: read
+
+	tablePermission dim_supplier
+		filterExpression: dim_supplier[supplier_category_id] = LOOKUPVALUE(dim_security_user[supplier_category_id], dim_security_user[user_principal_name], LOWER(USERPRINCIPALNAME()))

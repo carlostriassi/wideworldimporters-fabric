@@ -1,0 +1,6 @@
+role 'retail_auditor'
+	modelPermission: read
+
+	tablePermission dim_supplier
+		columnPermission phone_number
+			metadataPermission: none

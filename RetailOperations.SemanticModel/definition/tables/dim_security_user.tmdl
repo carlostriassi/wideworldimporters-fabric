@@ -1,0 +1,92 @@
+table dim_security_user
+	lineageTag: afd080df-5395-453f-9d3f-d5c425c960bb
+	sourceLineageTag: [shared].[dim_security_user]
+
+	column user_principal_name
+		dataType: string
+		lineageTag: cb30c3d2-5b89-44d9-8754-42e7d7874d68
+		sourceLineageTag: user_principal_name
+		summarizeBy: none
+		sourceColumn: user_principal_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column display_name
+		dataType: string
+		lineageTag: 7181d187-695d-47a2-a1de-472064271346
+		sourceLineageTag: display_name
+		summarizeBy: none
+		sourceColumn: display_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column domain
+		dataType: string
+		lineageTag: 8647240f-bee6-4bd9-bdc7-fadb568133fe
+		sourceLineageTag: domain
+		summarizeBy: none
+		sourceColumn: domain
+
+		annotation SummarizationSetBy = Automatic
+
+	column role
+		dataType: string
+		lineageTag: 0f68879a-2998-4f17-8740-50d5f325819e
+		sourceLineageTag: role
+		summarizeBy: none
+		sourceColumn: role
+
+		annotation SummarizationSetBy = Automatic
+
+	column is_active
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 861bdb57-bd05-4ea5-a84c-2efd1c10c7fb
+		sourceLineageTag: is_active
+		summarizeBy: none
+		sourceColumn: is_active
+
+		annotation SummarizationSetBy = Automatic
+
+	column delivery_city_id
+		dataType: string
+		lineageTag: ed4ffb19-3509-4c39-b269-0f998a908a22
+		sourceLineageTag: delivery_city_id
+		summarizeBy: none
+		sourceColumn: delivery_city_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column person_id
+		dataType: string
+		lineageTag: fb014be9-ba89-4e02-a76e-c617e28b4e8e
+		sourceLineageTag: person_id
+		summarizeBy: none
+		sourceColumn: person_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column supplier_category_id
+		dataType: string
+		lineageTag: a35dff88-3c85-4746-b8ed-132e9c73e130
+		sourceLineageTag: supplier_category_id
+		summarizeBy: none
+		sourceColumn: supplier_category_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column supplier_id
+		dataType: string
+		lineageTag: ed247e85-3648-458d-b7e0-baf4ad023122
+		sourceLineageTag: supplier_id
+		summarizeBy: none
+		sourceColumn: supplier_id
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dim_security_user = entity
+		mode: directLake
+		source
+			entityName: dim_security_user
+			schemaName: shared
+			expressionSource: 'DirectLake - GoldLH'

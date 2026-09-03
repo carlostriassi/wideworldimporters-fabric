@@ -7,7 +7,7 @@ table fact_customer_transactions
 		formatString: 0
 		lineageTag: 2956f77a-d712-4266-b628-a65986bde4ab
 		sourceLineageTag: fact_customer_transactions_sk
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: fact_customer_transactions_sk
 
 		annotation SummarizationSetBy = Automatic
@@ -17,7 +17,7 @@ table fact_customer_transactions
 		formatString: 0
 		lineageTag: 6346c3af-40b7-4dc9-ae58-67fffcccc651
 		sourceLineageTag: date_key
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: date_key
 
 		annotation SummarizationSetBy = Automatic
@@ -27,7 +27,7 @@ table fact_customer_transactions
 		formatString: 0
 		lineageTag: c1ed4032-7512-4197-94bf-f9d2aec6bfed
 		sourceLineageTag: customer_sk
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: customer_sk
 
 		annotation SummarizationSetBy = Automatic
@@ -37,7 +37,7 @@ table fact_customer_transactions
 		formatString: 0
 		lineageTag: 13765386-1cba-4cbb-910d-f4d1455f5db3
 		sourceLineageTag: customer_transaction_id
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: customer_transaction_id
 
 		annotation SummarizationSetBy = Automatic
@@ -47,7 +47,7 @@ table fact_customer_transactions
 		formatString: 0
 		lineageTag: 0021439a-1381-4989-a2de-aff58ae1fe1c
 		sourceLineageTag: customer_id
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: customer_id
 
 		annotation SummarizationSetBy = Automatic
@@ -57,7 +57,7 @@ table fact_customer_transactions
 		formatString: 0
 		lineageTag: 2ad87638-d50d-4465-aec5-ea0a105433b1
 		sourceLineageTag: transaction_type_id
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: transaction_type_id
 
 		annotation SummarizationSetBy = Automatic
@@ -67,7 +67,7 @@ table fact_customer_transactions
 		formatString: 0
 		lineageTag: 69c8f344-b525-4ef5-9ad9-2ccf4d5cf462
 		sourceLineageTag: invoice_id
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: invoice_id
 
 		annotation SummarizationSetBy = Automatic
@@ -77,7 +77,7 @@ table fact_customer_transactions
 		formatString: 0
 		lineageTag: 8afc3a96-11e3-4593-ba99-a3dce7e4c831
 		sourceLineageTag: payment_method_id
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: payment_method_id
 
 		annotation SummarizationSetBy = Automatic

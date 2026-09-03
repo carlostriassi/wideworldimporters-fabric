@@ -1,0 +1,12 @@
+role 'retail_auditor'
+	modelPermission: read
+
+	tablePermission dim_customer
+		columnPermission phone_number
+			metadataPermission: none
+
+	tablePermission dim_salesperson
+		columnPermission email_address
+			metadataPermission: none
+		columnPermission phone_number
+			metadataPermission: none

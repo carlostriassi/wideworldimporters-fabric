@@ -7,7 +7,7 @@ table dim_stock_item
 		formatString: 0
 		lineageTag: 32b46db9-e2c7-4b0c-b72c-2fe8ca92b1c7
 		sourceLineageTag: stock_item_id
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: stock_item_id
 
 		annotation SummarizationSetBy = Automatic
@@ -26,7 +26,7 @@ table dim_stock_item
 		formatString: 0
 		lineageTag: 6f173118-3a97-4129-a84a-b0733261750a
 		sourceLineageTag: supplier_id
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: supplier_id
 
 		annotation SummarizationSetBy = Automatic
@@ -36,7 +36,7 @@ table dim_stock_item
 		formatString: 0
 		lineageTag: 45acb114-53bf-45a1-86cc-cc851f346ead
 		sourceLineageTag: color_id
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: color_id
 
 		annotation SummarizationSetBy = Automatic
@@ -46,7 +46,7 @@ table dim_stock_item
 		formatString: 0
 		lineageTag: 594b2b4d-92ad-487c-bee0-a4191a9b6023
 		sourceLineageTag: unit_package_id
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: unit_package_id
 
 		annotation SummarizationSetBy = Automatic
@@ -56,7 +56,7 @@ table dim_stock_item
 		formatString: 0
 		lineageTag: 718b028c-d516-43f4-9ae5-8a40ab8e84e6
 		sourceLineageTag: outer_package_id
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: outer_package_id
 
 		annotation SummarizationSetBy = Automatic
@@ -122,7 +122,7 @@ table dim_stock_item
 		dataType: double
 		lineageTag: 73af5ae1-88d2-475b-94a2-4fd6ee1bd914
 		sourceLineageTag: tax_rate
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: tax_rate
 
 		annotation SummarizationSetBy = Automatic
@@ -176,7 +176,7 @@ table dim_stock_item
 		formatString: 0
 		lineageTag: 43ba4950-0c90-4c46-b11d-8bcdc8946b3c
 		sourceLineageTag: stock_item_sk
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: stock_item_sk
 
 		annotation SummarizationSetBy = Automatic

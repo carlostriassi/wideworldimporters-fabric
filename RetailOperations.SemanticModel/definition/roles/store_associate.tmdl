@@ -1,0 +1,5 @@
+role 'store_associate'
+	modelPermission: read
+
+	tablePermission dim_supplier
+		filterExpression: dim_supplier[supplier_id] = LOOKUPVALUE(dim_security_user[supplier_id], dim_security_user[user_principal_name], LOWER(USERPRINCIPALNAME()))
