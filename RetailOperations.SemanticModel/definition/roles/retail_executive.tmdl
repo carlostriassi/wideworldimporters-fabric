@@ -1,2 +1,5 @@
 role 'retail_executive'
 	modelPermission: read
+
+	tablePermission dim_security_user
+		metadataPermission: none

@@ -10,3 +10,6 @@ role 'retail_auditor'
 			metadataPermission: none
 		columnPermission phone_number
 			metadataPermission: none
+
+	tablePermission dim_security_user
+		metadataPermission: none

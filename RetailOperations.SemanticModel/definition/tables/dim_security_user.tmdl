@@ -1,10 +1,10 @@
 table dim_security_user
-	lineageTag: afd080df-5395-453f-9d3f-d5c425c960bb
+	lineageTag: 21296429-9467-4443-a4a8-cd80aa883c63
 	sourceLineageTag: [shared].[dim_security_user]
 
 	column user_principal_name
 		dataType: string
-		lineageTag: cb30c3d2-5b89-44d9-8754-42e7d7874d68
+		lineageTag: a95b0966-c1e2-4531-a2de-e862e0c15f55
 		sourceLineageTag: user_principal_name
 		summarizeBy: none
 		sourceColumn: user_principal_name
@@ -13,7 +13,7 @@ table dim_security_user
 
 	column display_name
 		dataType: string
-		lineageTag: 7181d187-695d-47a2-a1de-472064271346
+		lineageTag: bb09f226-185e-4475-8fbd-eb53ee399d31
 		sourceLineageTag: display_name
 		summarizeBy: none
 		sourceColumn: display_name
@@ -22,7 +22,7 @@ table dim_security_user
 
 	column domain
 		dataType: string
-		lineageTag: 8647240f-bee6-4bd9-bdc7-fadb568133fe
+		lineageTag: 95c6c30b-c9c5-461e-9059-15cf7f1a6288
 		sourceLineageTag: domain
 		summarizeBy: none
 		sourceColumn: domain
@@ -31,7 +31,7 @@ table dim_security_user
 
 	column role
 		dataType: string
-		lineageTag: 0f68879a-2998-4f17-8740-50d5f325819e
+		lineageTag: 339feefe-7432-4999-a6de-1841b7893246
 		sourceLineageTag: role
 		summarizeBy: none
 		sourceColumn: role
@@ -41,7 +41,7 @@ table dim_security_user
 	column is_active
 		dataType: boolean
 		formatString: """TRUE"";""TRUE"";""FALSE"""
-		lineageTag: 861bdb57-bd05-4ea5-a84c-2efd1c10c7fb
+		lineageTag: d0def485-65b3-4573-a3c2-6106197727bf
 		sourceLineageTag: is_active
 		summarizeBy: none
 		sourceColumn: is_active
@@ -50,7 +50,7 @@ table dim_security_user
 
 	column delivery_city_id
 		dataType: string
-		lineageTag: ed4ffb19-3509-4c39-b269-0f998a908a22
+		lineageTag: c64b26c2-8193-41b6-8466-b855d9102929
 		sourceLineageTag: delivery_city_id
 		summarizeBy: none
 		sourceColumn: delivery_city_id
@@ -59,7 +59,7 @@ table dim_security_user
 
 	column person_id
 		dataType: string
-		lineageTag: fb014be9-ba89-4e02-a76e-c617e28b4e8e
+		lineageTag: 3117c723-8171-4226-8c00-61f42e5aa4cf
 		sourceLineageTag: person_id
 		summarizeBy: none
 		sourceColumn: person_id
@@ -68,7 +68,7 @@ table dim_security_user
 
 	column supplier_category_id
 		dataType: string
-		lineageTag: a35dff88-3c85-4746-b8ed-132e9c73e130
+		lineageTag: 4e213777-a81d-4bd2-9ac8-4d2ebadf5818
 		sourceLineageTag: supplier_category_id
 		summarizeBy: none
 		sourceColumn: supplier_category_id
@@ -77,7 +77,7 @@ table dim_security_user
 
 	column supplier_id
 		dataType: string
-		lineageTag: ed247e85-3648-458d-b7e0-baf4ad023122
+		lineageTag: 95339cde-c3ea-4095-9b18-61ba072a454a
 		sourceLineageTag: supplier_id
 		summarizeBy: none
 		sourceColumn: supplier_id
