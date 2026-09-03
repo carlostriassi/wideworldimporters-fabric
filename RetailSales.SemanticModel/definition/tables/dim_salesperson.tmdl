@@ -7,7 +7,7 @@ table dim_salesperson
 		formatString: 0
 		lineageTag: 391cde33-d609-457b-ad7c-484a9c58c2dc
 		sourceLineageTag: person_id
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: person_id
 
 		annotation SummarizationSetBy = Automatic
@@ -73,7 +73,7 @@ table dim_salesperson
 		formatString: 0
 		lineageTag: da354b8a-b86b-4e37-919a-3f3509b57df6
 		sourceLineageTag: salesperson_sk
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: salesperson_sk
 
 		annotation SummarizationSetBy = Automatic
@@ -83,7 +83,7 @@ table dim_salesperson
 		formatString: 0
 		lineageTag: 17baa580-c815-46cd-8abd-7d59ddf794b2
 		sourceLineageTag: salesperson_person_id
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: salesperson_person_id
 
 		annotation SummarizationSetBy = Automatic

@@ -1,0 +1,35 @@
+relationship 'fact_purchase_order_lines-dim_date-date_key'
+	fromColumn: fact_purchase_order_lines.date_key
+	toColumn: dim_date.date_key
+	crossFilteringBehavior: oneDirection
+
+relationship 'fact_purchase_order_lines-dim_supplier-supplier_sk'
+	fromColumn: fact_purchase_order_lines.supplier_sk
+	toColumn: dim_supplier.supplier_sk
+	crossFilteringBehavior: oneDirection
+
+relationship 'fact_purchase_order_lines-dim_stock_item-stock_item_sk'
+	fromColumn: fact_purchase_order_lines.stock_item_sk
+	toColumn: dim_stock_item.stock_item_sk
+	crossFilteringBehavior: oneDirection
+
+relationship 'fact_supplier_transactions-dim_date-date_key'
+	fromColumn: fact_supplier_transactions.date_key
+	toColumn: dim_date.date_key
+	crossFilteringBehavior: oneDirection
+
+relationship 'fact_supplier_transactions-dim_supplier-supplier_sk'
+	fromColumn: fact_supplier_transactions.supplier_sk
+	toColumn: dim_supplier.supplier_sk
+	crossFilteringBehavior: oneDirection
+
+relationship 'fact_stock_transactions-dim_date-date_key'
+	fromColumn: fact_stock_transactions.date_key
+	toColumn: dim_date.date_key
+	crossFilteringBehavior: oneDirection
+
+relationship 'fact_stock_transactions-dim_stock_item-stock_item_sk'
+	fromColumn: fact_stock_transactions.stock_item_sk
+	toColumn: dim_stock_item.stock_item_sk
+	crossFilteringBehavior: oneDirection
+

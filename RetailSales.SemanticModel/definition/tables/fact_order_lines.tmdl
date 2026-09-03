@@ -7,7 +7,7 @@ table fact_order_lines
 		formatString: 0
 		lineageTag: 03633b43-91fc-47ca-883f-e6945523ce2c
 		sourceLineageTag: fact_order_lines_sk
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: fact_order_lines_sk
 
 		annotation SummarizationSetBy = Automatic
@@ -17,7 +17,7 @@ table fact_order_lines
 		formatString: 0
 		lineageTag: f23ece53-6726-4510-b2a0-ddd8fb80b5a9
 		sourceLineageTag: date_key
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: date_key
 
 		annotation SummarizationSetBy = Automatic
@@ -27,7 +27,7 @@ table fact_order_lines
 		formatString: 0
 		lineageTag: 1892097a-84a5-4536-924e-717880804487
 		sourceLineageTag: customer_sk
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: customer_sk
 
 		annotation SummarizationSetBy = Automatic
@@ -37,7 +37,7 @@ table fact_order_lines
 		formatString: 0
 		lineageTag: 5009b876-b7e4-4f15-8e7a-9c274f3ccab3
 		sourceLineageTag: salesperson_sk
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: salesperson_sk
 
 		annotation SummarizationSetBy = Automatic
@@ -47,7 +47,7 @@ table fact_order_lines
 		formatString: 0
 		lineageTag: 8cee4416-ed30-4350-a4c9-50ddc44490ac
 		sourceLineageTag: stock_item_sk
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: stock_item_sk
 
 		annotation SummarizationSetBy = Automatic
@@ -57,7 +57,7 @@ table fact_order_lines
 		formatString: 0
 		lineageTag: 4bd348b6-b995-4f07-bfa2-4142bd2d6384
 		sourceLineageTag: order_line_id
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: order_line_id
 
 		annotation SummarizationSetBy = Automatic
@@ -67,7 +67,7 @@ table fact_order_lines
 		formatString: 0
 		lineageTag: 8e8da491-5639-4d05-8d0b-8ded17f9a245
 		sourceLineageTag: order_id
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: order_id
 
 		annotation SummarizationSetBy = Automatic
@@ -77,7 +77,7 @@ table fact_order_lines
 		formatString: 0
 		lineageTag: 29aeb49f-27fa-4613-b78f-4b5ed2b99c0b
 		sourceLineageTag: stock_item_id
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: stock_item_id
 
 		annotation SummarizationSetBy = Automatic
@@ -87,7 +87,7 @@ table fact_order_lines
 		formatString: 0
 		lineageTag: f772d035-5f78-4206-9f55-3d0707588be9
 		sourceLineageTag: customer_id
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: customer_id
 
 		annotation SummarizationSetBy = Automatic
@@ -97,7 +97,7 @@ table fact_order_lines
 		formatString: 0
 		lineageTag: c9a36a08-89e7-48ac-80c7-a0262769d044
 		sourceLineageTag: salesperson_person_id
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: salesperson_person_id
 
 		annotation SummarizationSetBy = Automatic
@@ -107,7 +107,7 @@ table fact_order_lines
 		formatString: 0
 		lineageTag: 31c3cbdd-5293-4655-b100-0fc6677c5f8a
 		sourceLineageTag: package_type_id
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: package_type_id
 
 		annotation SummarizationSetBy = Automatic
@@ -146,7 +146,7 @@ table fact_order_lines
 		dataType: double
 		lineageTag: e6191c84-6da1-4f4b-ac0f-1a53b23eb61c
 		sourceLineageTag: tax_rate
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: tax_rate
 
 		annotation SummarizationSetBy = Automatic

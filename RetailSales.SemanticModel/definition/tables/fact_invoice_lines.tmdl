@@ -7,7 +7,7 @@ table fact_invoice_lines
 		formatString: 0
 		lineageTag: 7f10da4c-af79-4185-a21e-6fdcaac880ac
 		sourceLineageTag: fact_invoice_lines_sk
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: fact_invoice_lines_sk
 
 		annotation SummarizationSetBy = Automatic
@@ -17,7 +17,7 @@ table fact_invoice_lines
 		formatString: 0
 		lineageTag: 08a246f5-b52f-4c7d-b9c5-0dc2e97d489c
 		sourceLineageTag: date_key
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: date_key
 
 		annotation SummarizationSetBy = Automatic
@@ -27,7 +27,7 @@ table fact_invoice_lines
 		formatString: 0
 		lineageTag: 9987ddce-57c8-45ae-a69e-9dcf98351923
 		sourceLineageTag: customer_sk
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: customer_sk
 
 		annotation SummarizationSetBy = Automatic
@@ -37,7 +37,7 @@ table fact_invoice_lines
 		formatString: 0
 		lineageTag: 20c48998-dd9c-4fa6-ad0b-d31f1788ee01
 		sourceLineageTag: salesperson_sk
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: salesperson_sk
 
 		annotation SummarizationSetBy = Automatic
@@ -47,7 +47,7 @@ table fact_invoice_lines
 		formatString: 0
 		lineageTag: 37a33746-bf8e-4fa0-8794-346646e20721
 		sourceLineageTag: stock_item_sk
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: stock_item_sk
 
 		annotation SummarizationSetBy = Automatic
@@ -57,7 +57,7 @@ table fact_invoice_lines
 		formatString: 0
 		lineageTag: c676be60-6dce-4aee-9b17-4b9fc21c978c
 		sourceLineageTag: invoice_line_id
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: invoice_line_id
 
 		annotation SummarizationSetBy = Automatic
@@ -67,7 +67,7 @@ table fact_invoice_lines
 		formatString: 0
 		lineageTag: 626a8368-185d-4ffc-b3eb-d9ac94f62a87
 		sourceLineageTag: invoice_id
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: invoice_id
 
 		annotation SummarizationSetBy = Automatic
@@ -77,7 +77,7 @@ table fact_invoice_lines
 		formatString: 0
 		lineageTag: ec96a9a0-14d1-4180-b8df-fe49eebab44a
 		sourceLineageTag: stock_item_id
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: stock_item_id
 
 		annotation SummarizationSetBy = Automatic
@@ -87,7 +87,7 @@ table fact_invoice_lines
 		formatString: 0
 		lineageTag: 3112ca74-a2da-4fce-bcfd-fafa88707f1d
 		sourceLineageTag: customer_id
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: customer_id
 
 		annotation SummarizationSetBy = Automatic
@@ -97,7 +97,7 @@ table fact_invoice_lines
 		formatString: 0
 		lineageTag: 0d8f0f86-f75f-4257-bff5-ab77ddced830
 		sourceLineageTag: salesperson_person_id
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: salesperson_person_id
 
 		annotation SummarizationSetBy = Automatic
@@ -107,7 +107,7 @@ table fact_invoice_lines
 		formatString: 0
 		lineageTag: 7aed8d89-fe54-4471-9b62-e840e56168f1
 		sourceLineageTag: package_type_id
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: package_type_id
 
 		annotation SummarizationSetBy = Automatic
@@ -146,7 +146,7 @@ table fact_invoice_lines
 		dataType: double
 		lineageTag: 1ee18cc7-3430-4528-ba92-ff58fb2d20af
 		sourceLineageTag: tax_rate
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: tax_rate
 
 		annotation SummarizationSetBy = Automatic

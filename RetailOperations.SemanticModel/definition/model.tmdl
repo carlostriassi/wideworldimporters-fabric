@@ -16,4 +16,8 @@ ref table fact_stock_transactions
 ref table fact_purchase_order_lines
 ref table dim_supplier
 ref table dim_date
-
+ref table dim_security_user
+ref role 'store_associate'
+ref role 'district_manager'
+ref role 'retail_executive'
+ref role 'retail_auditor'

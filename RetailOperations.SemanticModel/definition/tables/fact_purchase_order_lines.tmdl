@@ -7,7 +7,7 @@ table fact_purchase_order_lines
 		formatString: 0
 		lineageTag: 95169ed1-a15a-4d86-a92f-85d22f01e64f
 		sourceLineageTag: fact_purchase_order_lines_sk
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: fact_purchase_order_lines_sk
 
 		annotation SummarizationSetBy = Automatic
@@ -17,7 +17,7 @@ table fact_purchase_order_lines
 		formatString: 0
 		lineageTag: abb9846c-7d9a-4298-89d5-733f37c3ab75
 		sourceLineageTag: date_key
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: date_key
 
 		annotation SummarizationSetBy = Automatic
@@ -27,7 +27,7 @@ table fact_purchase_order_lines
 		formatString: 0
 		lineageTag: c6fef5fa-cb8d-4738-90c6-228670c4cba9
 		sourceLineageTag: supplier_sk
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: supplier_sk
 
 		annotation SummarizationSetBy = Automatic
@@ -37,7 +37,7 @@ table fact_purchase_order_lines
 		formatString: 0
 		lineageTag: 059afc1f-7099-4ff5-a6f6-b3d71833bb05
 		sourceLineageTag: stock_item_sk
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: stock_item_sk
 
 		annotation SummarizationSetBy = Automatic
@@ -47,7 +47,7 @@ table fact_purchase_order_lines
 		formatString: 0
 		lineageTag: a2803168-0d85-474b-bbfc-7cd3124ae80d
 		sourceLineageTag: purchase_order_line_id
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: purchase_order_line_id
 
 		annotation SummarizationSetBy = Automatic
@@ -57,7 +57,7 @@ table fact_purchase_order_lines
 		formatString: 0
 		lineageTag: 02c78a47-7cd2-4177-843e-a465a5387e20
 		sourceLineageTag: purchase_order_id
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: purchase_order_id
 
 		annotation SummarizationSetBy = Automatic
@@ -67,7 +67,7 @@ table fact_purchase_order_lines
 		formatString: 0
 		lineageTag: 2b3189a2-597a-4288-ab8b-8d2f13e3549d
 		sourceLineageTag: stock_item_id
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: stock_item_id
 
 		annotation SummarizationSetBy = Automatic
@@ -77,7 +77,7 @@ table fact_purchase_order_lines
 		formatString: 0
 		lineageTag: 8a0c3995-4731-4b13-80a5-7619f5c1f756
 		sourceLineageTag: supplier_id
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: supplier_id
 
 		annotation SummarizationSetBy = Automatic
@@ -87,7 +87,7 @@ table fact_purchase_order_lines
 		formatString: 0
 		lineageTag: 94db5160-ff08-4bce-bf13-6220230de216
 		sourceLineageTag: package_type_id
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: package_type_id
 
 		annotation SummarizationSetBy = Automatic

@@ -7,7 +7,7 @@ table dim_customer
 		formatString: 0
 		lineageTag: 524f64de-4c2d-4505-a253-2195275bd917
 		sourceLineageTag: customer_id
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: customer_id
 
 		annotation SummarizationSetBy = Automatic
@@ -26,7 +26,7 @@ table dim_customer
 		formatString: 0
 		lineageTag: d575e279-2bbf-42da-bbf5-26109f936890
 		sourceLineageTag: bill_to_customer_id
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: bill_to_customer_id
 
 		annotation SummarizationSetBy = Automatic
@@ -36,7 +36,7 @@ table dim_customer
 		formatString: 0
 		lineageTag: e4b477b8-8ede-4729-8b7b-7970f4e9feeb
 		sourceLineageTag: customer_category_id
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: customer_category_id
 
 		annotation SummarizationSetBy = Automatic
@@ -46,7 +46,7 @@ table dim_customer
 		formatString: 0
 		lineageTag: 9b3a026d-3534-42eb-afd0-57e699848b7b
 		sourceLineageTag: buying_group_id
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: buying_group_id
 
 		annotation SummarizationSetBy = Automatic
@@ -56,7 +56,7 @@ table dim_customer
 		formatString: 0
 		lineageTag: 8eb3db63-ed2a-4da6-93d3-f4e4a8346be9
 		sourceLineageTag: delivery_method_id
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: delivery_method_id
 
 		annotation SummarizationSetBy = Automatic
@@ -66,7 +66,7 @@ table dim_customer
 		formatString: 0
 		lineageTag: 827e6d7b-0665-4585-9c41-59fdc736733f
 		sourceLineageTag: delivery_city_id
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: delivery_city_id
 
 		annotation SummarizationSetBy = Automatic
@@ -76,7 +76,7 @@ table dim_customer
 		formatString: 0
 		lineageTag: 5858834b-a206-44a0-b3ec-0d68bae246ca
 		sourceLineageTag: postal_city_id
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: postal_city_id
 
 		annotation SummarizationSetBy = Automatic
@@ -238,7 +238,7 @@ table dim_customer
 		formatString: 0
 		lineageTag: a00b1588-952a-4233-a8e9-2788273887bf
 		sourceLineageTag: customer_sk
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: customer_sk
 
 		annotation SummarizationSetBy = Automatic
