@@ -130,6 +130,17 @@ def _warehouse_conn():
     Returns a pyodbc connection to GoldWH using an Entra-issued access token.
     Reopened per call so cells can recover from token expiry without manual
     intervention.
+
+    autocommit=True is required, not optional: Fabric Warehouse always runs
+    under snapshot isolation, and several DDL statements this notebook issues
+    (CREATE SECURITY POLICY, CREATE/ALTER FUNCTION with SCHEMABINDING, CREATE
+    SCHEMA) are metadata changes SQL Server refuses to run inside a user
+    transaction under snapshot isolation ("Transaction failed because this
+    DDL statement is not allowed inside a snapshot isolation transaction",
+    error 3964). With autocommit off, pyodbc's driver wraps every statement
+    in an implicit transaction until conn.commit() is called, which is enough
+    to trigger 3964. conn.commit()/rollback() remain harmless no-ops in
+    autocommit mode, so no other call site needs to change.
     """
     SQL_COPT_SS_ACCESS_TOKEN = 1256
     conn_str = (
@@ -138,7 +149,11 @@ def _warehouse_conn():
         "Encrypt=yes;TrustServerCertificate=no;"
         f"Database={GOLD_WH_NAME};"
     )
-    return pyodbc.connect(conn_str, attrs_before={SQL_COPT_SS_ACCESS_TOKEN: _wh_token()})
+    return pyodbc.connect(
+        conn_str,
+        attrs_before={SQL_COPT_SS_ACCESS_TOKEN: _wh_token()},
+        autocommit=True,
+    )
 
 def _exec(sql: str, params=None):
     """Execute a single statement; commits and returns affected rowcount (or -1)."""
