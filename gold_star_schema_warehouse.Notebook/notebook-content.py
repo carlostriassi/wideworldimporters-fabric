@@ -1127,6 +1127,38 @@ def _split_sql_on_go(sql_text: str) -> list:
         batches.append(tail)
     return batches
 
+def _write_security_ddl_trace(run_record: dict):
+    """
+    Appends one _apply_security_ddl() run record to
+    GoldLH/Files/_triage/security_ddl_runs.json, bounded to the last 20 runs.
+
+    Fabric's own run logs already show the current run's print/log output,
+    but they scroll out of easy reach across runs. This file is the durable,
+    queryable record — "did security_ddl.sql apply cleanly on every run this
+    week" is a read of one JSON file instead of hunting through Monitoring Hub.
+    Skips (with a warning) if GOLD_ITEM_ID isn't configured, matching the
+    gold_warnings.json pattern below in Cell 5.
+    """
+    if not GOLD_ITEM_ID:
+        log.warning("[GOLD-WH] GOLD_ITEM_ID not set — skipping security_ddl_runs.json trace write")
+        return
+    _path = f"abfss://{WORKSPACE_GUID}@{ONELAKE_HOST}/{GOLD_ITEM_ID}/Files/_triage/security_ddl_runs.json"
+    try:
+        try:
+            existing = mssparkutils.fs.head(_path, 4_000_000)
+            history = json.loads(existing) if existing else []
+        except Exception:
+            history = []
+        history.append(run_record)
+        history = history[-20:]
+        mssparkutils.fs.put(_path, json.dumps(history, indent=2), overwrite=True)
+        log.info(
+            f"[GOLD-WH] security DDL run trace appended to _triage/security_ddl_runs.json "
+            f"({len(history)} run(s) retained)"
+        )
+    except Exception as exc:
+        log.warning(f"[GOLD-WH] could not write security_ddl_runs.json: {exc}")
+
 def _apply_security_ddl():
     """
     Re-applies warehouse/security_ddl.sql at the end of every physical build.
@@ -1139,7 +1171,16 @@ def _apply_security_ddl():
     scripts/apply_warehouse_security.py. The DDL is fully idempotent (every
     CREATE is guarded by IF NOT EXISTS / CREATE OR ALTER), so re-running it
     here is safe.
+
+    Every batch (each GO-delimited statement) is timed and logged individually,
+    and the full per-batch trace for this run is persisted via
+    _write_security_ddl_trace() so failures/timings are inspectable after the
+    notebook run has scrolled out of view.
     """
+    import datetime as _dt
+    _run_started_at = _dt.datetime.utcnow().isoformat() + "Z"
+    _run_t0         = time.time()
+
     ddl_path = f"{_cfg_local}/security_ddl.sql"
     if not os.path.exists(ddl_path):
         log.warning(
@@ -1148,26 +1189,59 @@ def _apply_security_ddl():
             "manually, and ensure warehouse/security_ddl.sql is uploaded alongside "
             "the other files in BronzeLH/Files/config/."
         )
+        _write_security_ddl_trace({
+            "run_at":     _run_started_at,
+            "status":     "SKIPPED",
+            "reason":     "security_ddl.sql not found in config staging",
+            "succeeded":  0,
+            "failed":     0,
+            "elapsed_s":  round(time.time() - _run_t0, 2),
+            "batches":    [],
+        })
         return
 
     with open(ddl_path, "r", encoding="utf-8") as _fh:
         batches = _split_sql_on_go(_fh.read())
 
+    trace = []
     succeeded = failed = 0
     with _warehouse_conn() as conn:
         cur = conn.cursor()
-        for batch in batches:
+        for i, batch in enumerate(batches, 1):
+            label = next((ln for ln in batch.splitlines() if ln.strip()), "")[:100]
+            _batch_t0 = time.time()
             try:
                 cur.execute(batch)
                 while cur.nextset():
                     pass
                 conn.commit()
                 succeeded += 1
+                elapsed_ms = round((time.time() - _batch_t0) * 1000, 1)
+                trace.append({"batch": i, "label": label, "status": "OK", "elapsed_ms": elapsed_ms})
+                log.info(f"[GOLD-WH][security-ddl] [{i}/{len(batches)}] OK   {label} ({elapsed_ms} ms)")
             except Exception as exc:
                 failed += 1
-                label = next((ln for ln in batch.splitlines() if ln.strip()), "")[:80]
-                log.warning(f"[GOLD-WH] security DDL batch failed ({label}): {exc}")
-    log.info(f"[GOLD-WH] security DDL re-applied: {succeeded}/{len(batches)} batches OK, {failed} failed")
+                elapsed_ms = round((time.time() - _batch_t0) * 1000, 1)
+                trace.append({
+                    "batch": i, "label": label, "status": "FAILED",
+                    "elapsed_ms": elapsed_ms, "error": str(exc),
+                })
+                log.warning(f"[GOLD-WH][security-ddl] [{i}/{len(batches)}] FAIL {label} ({elapsed_ms} ms): {exc}")
+
+    total_elapsed = round(time.time() - _run_t0, 2)
+    log.info(
+        f"[GOLD-WH] security DDL re-applied: {succeeded}/{len(batches)} batches OK, "
+        f"{failed} failed, {total_elapsed}s total"
+    )
+    _write_security_ddl_trace({
+        "run_at":     _run_started_at,
+        "status":     "FAILED" if failed else "SUCCESS",
+        "succeeded":  succeeded,
+        "failed":     failed,
+        "total":      len(batches),
+        "elapsed_s":  total_elapsed,
+        "batches":    trace,
+    })
 
 # METADATA ********************
 
