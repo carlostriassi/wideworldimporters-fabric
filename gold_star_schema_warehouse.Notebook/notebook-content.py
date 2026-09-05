@@ -42,7 +42,7 @@ except ImportError:
 # CELL ********************
 
 # CELL 1 — Imports, gate, pyodbc connection
-import sys, os, json, logging, struct, time
+import sys, os, json, logging, struct, time, re
 
 # Copy config from BronzeLH to local driver filesystem
 # (matches the LH notebook's cell 1 pattern — see gold_star_schema.Notebook).
@@ -51,7 +51,7 @@ _cfg_src   = f"abfss://{_lh.workspaceId}@onelake.dfs.fabric.microsoft.com/{_lh.i
 _cfg_local = "/tmp/nb_config"
 os.makedirs(_cfg_local, exist_ok=True)
 for _f in mssparkutils.fs.ls(_cfg_src):
-    if _f.name.endswith(".py"):
+    if _f.name.endswith(".py") or _f.name.endswith(".sql"):
         with open(f"{_cfg_local}/{_f.name}", "w") as _fh:
             _fh.write(mssparkutils.fs.head(_f.path, 1_000_000))
 import importlib
@@ -71,8 +71,13 @@ import workspace_config as _wc
 from workspace_config import (
     WORKSPACE_GUID, ONELAKE_HOST, PIPELINE_TIER,
     WAREHOUSE_ENABLED, WAREHOUSE_ITEM_ID, WAREHOUSE_SQL_ENDPOINT,
-    SILVER_TABLES, GOLD_TABLES, GOLD_ITEM_ID,
+    SILVER_TABLES, GOLD_TABLES, GOLD_BASE, GOLD_ITEM_ID,
 )
+
+# Above this row count, _insert_df_to_wh() switches from literal INSERT batching
+# to a staging-Parquet + COPY INTO load (see _copy_into_wh) — literal batching
+# does not scale to large dimension/history tables.
+_WH_COPY_INTO_THRESHOLD = 50_000
 
 # Warehouse display name doubles as the SQL catalog. getattr keeps older
 # client configs (written before GOLD_WH_NAME existed) working unchanged.
@@ -195,6 +200,29 @@ def _sql_literal(v) -> str:
         return "0x" + bytes(v).hex()
     return "N'" + str(v).replace("'", "''") + "'"
 
+def _copy_into_wh(df, wh_table: str, cols: list, n_rows: int):
+    """
+    Bulk-loads a large DataFrame into a WH physical table via a staging
+    Parquet file + T-SQL COPY INTO, instead of the row-literal INSERT
+    batching in _insert_df_to_wh — literal batching does not scale past
+    tens of thousands of rows. Used only for tables over
+    _WH_COPY_INTO_THRESHOLD rows; dimension-sized tables keep using the
+    simpler literal-INSERT path.
+    """
+    stage_path = f"{GOLD_BASE}/Files/_wh_staging/{wh_table.replace('.', '_')}.parquet"
+    df.select(cols).write.mode("overwrite").parquet(stage_path)
+    # COPY INTO reads OneLake over https, not abfss — same host/path, different scheme.
+    https_path = stage_path.replace(f"abfss://{WORKSPACE_GUID}@", "https://")
+    try:
+        _exec(f"""
+            COPY INTO {wh_table} ({', '.join(f'[{c}]' for c in cols)})
+            FROM '{https_path}'
+            WITH (FILE_TYPE = 'PARQUET');
+        """)
+    finally:
+        mssparkutils.fs.rm(stage_path, True)
+    log.info(f"[GOLD-WH] {n_rows} rows → {wh_table} (COPY INTO from staging parquet)")
+
 def _insert_df_to_wh(df, wh_table: str):
     """
     Batch-insert a PySpark DataFrame into a WH physical table using inline
@@ -205,13 +233,21 @@ def _insert_df_to_wh(df, wh_table: str):
     which is what previously broke dim_supplier and dim_customer. Only
     dimension tables flow through here; facts are built server-side with
     SELECT INTO + MERGE and never materialise on the driver.
+
+    Tables over _WH_COPY_INTO_THRESHOLD rows are routed to _copy_into_wh()
+    instead — literal-INSERT batching does not scale to large dimension or
+    history-satellite tables.
     """
-    cols = list(df.columns)
-    rows = df.collect()
-    if not rows:
+    cols   = list(df.columns)
+    n_rows = df.count()
+    if n_rows == 0:
         log.info(f"[GOLD-WH] 0 rows → {wh_table} (nothing to insert)")
         return
+    if n_rows > _WH_COPY_INTO_THRESHOLD:
+        _copy_into_wh(df, wh_table, cols, n_rows)
+        return
 
+    rows = df.collect()
     insert_prefix = (f"INSERT INTO {wh_table} "
                      f"({', '.join(f'[{c}]' for c in cols)}) VALUES ")
     # SQL Server caps INSERT ... VALUES at 1000 rows; also keep the statement
@@ -643,6 +679,7 @@ def build_dimension_wh(dim_name: str, dim_cfg: dict, domain: str):
         n = _query(f"SELECT COUNT(*) FROM {schema}.{table}")[0][0]
         log.info(f"[GOLD-WH] {schema}.{table}: {n} rows (type1)")
         _apply_masked_columns_wh(schema, table, dim_cfg)
+        _exec(f"UPDATE STATISTICS {schema}.{table} WITH FULLSCAN;")
         return table
 
     if dim_type == "scd2":
@@ -668,6 +705,7 @@ def build_dimension_wh(dim_name: str, dim_cfg: dict, domain: str):
         n = _query(f"SELECT COUNT(*) FROM {schema}.{table}")[0][0]
         log.info(f"[GOLD-WH] {schema}.{table}: {n} rows (scd2)")
         _apply_masked_columns_wh(schema, table, dim_cfg)
+        _exec(f"UPDATE STATISTICS {schema}.{table} WITH FULLSCAN;")
         return table
 
     if dim_type == "type4":
@@ -696,6 +734,7 @@ def build_dimension_wh(dim_name: str, dim_cfg: dict, domain: str):
         n = _query(f"SELECT COUNT(*) FROM {schema}.{table}")[0][0]
         log.info(f"[GOLD-WH] {schema}.{table}: {n} rows (type4 main)")
         _apply_masked_columns_wh(schema, table, dim_cfg)
+        _exec(f"UPDATE STATISTICS {schema}.{table} WITH FULLSCAN;")
 
         # ── History satellite: full replace from GoldLH's append-only table ──
         # The LH notebook appends only changed rows, so LH already holds the
@@ -718,6 +757,7 @@ def build_dimension_wh(dim_name: str, dim_cfg: dict, domain: str):
             _insert_df_to_wh(df_hist.select(hist_cols), f"{schema}.{hist_table}")
             nh = _query(f"SELECT COUNT(*) FROM {schema}.{hist_table}")[0][0]
             log.info(f"[GOLD-WH] {schema}.{hist_table}: {nh} rows (type4 history)")
+            _exec(f"UPDATE STATISTICS {schema}.{hist_table} WITH FULLSCAN;")
         except Exception as _hist_exc:
             # An empty history table is not fatal for the main dimension or for
             # any fact joining to it — surface it and continue.
@@ -1034,8 +1074,85 @@ def build_fact_wh(fact_name: str, fact_cfg: dict, domain: str, built_dims: set):
         # Always clean up the staging table, even on RI gate failure
         _exec(f"IF OBJECT_ID('{stage_table}', 'U') IS NOT NULL DROP TABLE {stage_table};")
 
+    # Full reload every run — sampled stats would be stale relative to the fresh
+    # data, so force a full scan rather than relying on Fabric's auto-stats.
+    _exec(f"UPDATE STATISTICS {schema}.{table} WITH FULLSCAN;")
+
     n = _query(f"SELECT COUNT(*) FROM {schema}.{table}")[0][0]
     log.info(f"[GOLD-WH] {schema}.{table}: {n} rows total")
+
+# METADATA ********************
+
+# META {
+# META   "language": "python",
+# META   "language_group": "synapse_pyspark"
+# META }
+
+# CELL ********************
+
+def _split_sql_on_go(sql_text: str) -> list:
+    """
+    Splits a T-SQL script on lines that contain only 'GO' (case-insensitive).
+    Mirrors scripts/apply_warehouse_security.py::_split_on_go() — duplicated
+    here rather than imported, since notebook cells can't import project
+    scripts by path.
+    """
+    batches, current = [], []
+    go_re = re.compile(r"^\s*GO\s*$", re.IGNORECASE)
+    for line in sql_text.splitlines():
+        if go_re.match(line):
+            text = "\n".join(current).strip()
+            if text:
+                batches.append(text)
+            current = []
+        else:
+            current.append(line)
+    tail = "\n".join(current).strip()
+    if tail:
+        batches.append(tail)
+    return batches
+
+def _apply_security_ddl():
+    """
+    Re-applies warehouse/security_ddl.sql at the end of every physical build.
+
+    build_dimension_wh() drops each dimension's RLS security policy (and any
+    DDM masking, which is a column property of the table) before DROP TABLE,
+    since Fabric Warehouse won't drop a table with a bound security policy.
+    Without this, every scheduled/automated run of this notebook leaves the
+    Warehouse unsecured until a human remembers to manually rerun
+    scripts/apply_warehouse_security.py. The DDL is fully idempotent (every
+    CREATE is guarded by IF NOT EXISTS / CREATE OR ALTER), so re-running it
+    here is safe.
+    """
+    ddl_path = f"{_cfg_local}/security_ddl.sql"
+    if not os.path.exists(ddl_path):
+        log.warning(
+            "[GOLD-WH] security_ddl.sql not found in config staging — skipping "
+            "post-build security re-apply. Run scripts/apply_warehouse_security.py "
+            "manually, and ensure warehouse/security_ddl.sql is uploaded alongside "
+            "the other files in BronzeLH/Files/config/."
+        )
+        return
+
+    with open(ddl_path, "r", encoding="utf-8") as _fh:
+        batches = _split_sql_on_go(_fh.read())
+
+    succeeded = failed = 0
+    with _warehouse_conn() as conn:
+        cur = conn.cursor()
+        for batch in batches:
+            try:
+                cur.execute(batch)
+                while cur.nextset():
+                    pass
+                conn.commit()
+                succeeded += 1
+            except Exception as exc:
+                failed += 1
+                label = next((ln for ln in batch.splitlines() if ln.strip()), "")[:80]
+                log.warning(f"[GOLD-WH] security DDL batch failed ({label}): {exc}")
+    log.info(f"[GOLD-WH] security DDL re-applied: {succeeded}/{len(batches)} batches OK, {failed} failed")
 
 # METADATA ********************
 
@@ -1091,6 +1208,14 @@ for r in results:
     icon   = "✓" if r["status"] == "SUCCESS" else "✗"
     detail = f"\n       ERROR: {r['error']}" if r.get("error") else ""
     print(f"  {icon}  [{r['layer']}] {r['name']} — {r['status']}{detail}")
+
+# Re-apply security DDL (RLS policies + DDM) that build_dimension_wh() had to
+# drop to rebuild tables. Skip on a total wipeout — a still-good prior security
+# state shouldn't be clobbered against an empty/all-failed run.
+if any(r["status"] == "SUCCESS" for r in results):
+    _apply_security_ddl()
+else:
+    log.warning("[GOLD-WH] no successful dim/fact builds this run — skipping security DDL re-apply")
 
 # Write RI warnings to GoldLH/_triage/gold_warnings.json so the Triage tab picks
 # them up. Uses a direct abfss path via WORKSPACE_GUID + GOLD_ITEM_ID so GoldLH
